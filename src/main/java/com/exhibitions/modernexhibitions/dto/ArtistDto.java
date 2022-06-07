@@ -1,24 +1,25 @@
-package com.exhibitions.modernexhibitions.entity;
+package com.exhibitions.modernexhibitions.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
 
 @ToString
-@Node("Artist")
-public class Artist {
+public class ArtistDto {
 
-    @Id
     @Getter
+    @Setter
     private Integer id;
 
     @Getter
+    @Setter
     private String name;
 
     @Getter
+    @Setter
     private String nationality;
 
     @Getter
+    @Setter
     private String occupation;
 }

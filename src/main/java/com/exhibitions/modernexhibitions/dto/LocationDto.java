@@ -1,30 +1,33 @@
-package com.exhibitions.modernexhibitions.entity;
+package com.exhibitions.modernexhibitions.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
 
 @ToString
-@Node("Location")
-public class Location {
+public class LocationDto {
 
-    @Id
     @Getter
+    @Setter
     private Integer id;
 
     @Getter
+    @Setter
     private String venue;
 
     @Getter
+    @Setter
     private String city;
 
     @Getter
+    @Setter
     private String country;
 
     @Getter
+    @Setter
     private Double longitude;
 
     @Getter
+    @Setter
     private Double latitude;
 }

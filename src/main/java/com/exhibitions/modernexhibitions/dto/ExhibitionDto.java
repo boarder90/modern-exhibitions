@@ -1,43 +1,49 @@
-package com.exhibitions.modernexhibitions.entity;
+package com.exhibitions.modernexhibitions.dto;
 
+import com.exhibitions.modernexhibitions.entity.Location;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.List;
 
 @ToString
-@Node("Exhibition")
-public class Exhibition {
+public class ExhibitionDto {
 
-    @Id
     @Getter
+    @Setter
     private Integer id;
 
     @Getter
+    @Setter
     private String title;
 
     @Getter
+    @Setter
     private String startDate;
 
     @Getter
+    @Setter
     private String endDate;
 
     @Getter
+    @Setter
     private int startYear;
 
     @Getter
+    @Setter
     private int endYear;
 
     @Getter
+    @Setter
     private int numArtists;
 
     @Getter
+    @Setter
     private int numCatalogueEntries;
 
     @Getter
-    @Relationship(type="TAKES_PLACE", direction = Relationship.Direction.OUTGOING)
+    @Setter
     List<Location> locations;
+
 }
