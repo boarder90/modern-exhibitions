@@ -4,22 +4,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @ToString
+@Getter
+@Setter
 public class ArtistDto {
 
-    @Getter
-    @Setter
     private Integer id;
-
-    @Getter
-    @Setter
     private String name;
-
-    @Getter
-    @Setter
     private String nationality;
-
-    @Getter
-    @Setter
+    private String sex;
     private String occupation;
+    private List<ArtistDto> coArtistsOutgoing;
+    private List<ArtistDto> coArtistsIncoming;
+    private List<ArtistDto> coArtistsTotalOutgoing;
+    private List<ArtistDto> coArtistsTotalIncoming;
 }

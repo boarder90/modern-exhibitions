@@ -1,7 +1,9 @@
 package com.exhibitions.modernexhibitions;
 
 import com.exhibitions.modernexhibitions.entity.Exhibition;
+import com.exhibitions.modernexhibitions.repository.ArtistRepository;
 import com.exhibitions.modernexhibitions.repository.ExhibitionRepository;
+import com.exhibitions.modernexhibitions.repository.NonDomainRepository;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -18,6 +20,5 @@ public class ModernExhibitionsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ModernExhibitionsApplication.class, args);
-
 	}
 }
