@@ -6,7 +6,6 @@ import com.exhibitions.modernexhibitions.service.ExhibitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,12 +19,19 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     }
 
     public List<Exhibition> findAll (){
+        System.out.println(exhibitionRepository.findAll());
         return this.exhibitionRepository.findAll();
     }
 
-    public List<Exhibition> findExhibitionsFiltered (List<Integer> artistIds, Integer year){
+    public List<Exhibition> findExhibitionsFiltered (List<Double> coordinates, List<Integer> artistIds, Integer year){
+        //System.out.println(coordinates.toString());
+        //System.out.println(coordinates.toString());
         System.out.println(artistIds == null);
-        return this.exhibitionRepository.findExhibitionsFiltered(artistIds, year);
+        if(coordinates == null){
+            return this.exhibitionRepository.findExhibitionsFiltered(null, null, artistIds, year);
+        } else {
+            return this.exhibitionRepository.findExhibitionsFiltered(coordinates.get(1), coordinates.get(0), artistIds, year);
+        }
     }
 
 

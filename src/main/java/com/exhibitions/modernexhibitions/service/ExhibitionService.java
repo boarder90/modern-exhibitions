@@ -8,5 +8,5 @@ public interface ExhibitionService {
 
     List<Exhibition> findAll();
 
-    List<Exhibition> findExhibitionsFiltered (List<Integer> artistIds, Integer year);
+    List<Exhibition> findExhibitionsFiltered (List<Double> coordinates, List<Integer> artistIds, Integer year);
 }
