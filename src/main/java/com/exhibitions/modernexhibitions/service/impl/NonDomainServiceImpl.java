@@ -26,7 +26,7 @@ public class NonDomainServiceImpl implements NonDomainService {
     }
 
 
-    @Override
+   /* @Override
     public List<LinkDto> getEgoNetworkRelationships(Integer id, Integer numExhibitions) throws NotFoundException {
         artistService.getArtistById(id);
         return nonDomainRepository.getEgoNetworkRelationships(id, numExhibitions);
@@ -41,7 +41,7 @@ public class NonDomainServiceImpl implements NonDomainService {
     @Override
     public List<LinkDto> getNetworkRelationshipsByIds(List<Integer> ids, Integer numExhibitions) {
         return nonDomainRepository.getNetworkRelationshipsByIds(ids, numExhibitions);
-    }
+    }*/
 
     @Override
     public FeatureCollectionDto getExhibitionLocationsAsGeoJSON() {
