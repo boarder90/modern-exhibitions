@@ -4,28 +4,18 @@ import lombok.Getter;
 import org.springframework.data.neo4j.core.schema.*;
 
 @RelationshipProperties
+@Getter
 public class ExhibitsWith {
 
     @RelationshipId
     private Long id;
-
-    @Getter
     private final Integer startYear;
-
-    @Getter
     private final Integer endYear;
-
-    @Getter
     private final Integer numExhibitions;
-
-    @Getter
     private final String[] cities;
-
-    @Getter
     private final String[] countries;
 
     @TargetNode
-    @Getter
     private final Artist artist;
 
     public ExhibitsWith(Artist artist, Integer startYear, Integer endYear, String[] cities, String[] countries, Integer numExhibitions ) {

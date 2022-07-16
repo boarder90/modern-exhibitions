@@ -7,24 +7,15 @@ import java.util.Arrays;
 import java.util.List;
 
 @RelationshipProperties
+@Getter
 public class ExhibitsWithTotal {
 
     @RelationshipId
     private Long id;
-
-    @Getter
     private final Integer[] startYears;
-
-    @Getter
     private final Integer[] endYears;
-
-    @Getter
     private final Integer numExhibitions;
-
-    @Getter
     private final String[] cities;
-
-    @Getter
     private final String[] countries;
 
     @TargetNode
