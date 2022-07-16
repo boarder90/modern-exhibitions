@@ -1,21 +1,42 @@
-<div class="container">
+<div class="container-fluid mt-5">
   <div class="row">
-    <div class="map col-10" *ngIf="loaded" style="height: 500px"
-         leaflet
+    <div class="map col-md-10">
+         <div leaflet *ngIf="loaded" style="height: 60vh;"
          [leafletOptions]="options"
          [leafletLayers]="layers"
          [leafletMarkerCluster]="data"
          [leafletMarkerClusterOptions]="markerClusterOptions">
     </div>
-    <div class="col-2 d-flex justify-content-center bg-light">
-      <div *ngIf="exhibitions.length!>0" class="row" style="position:fixed; margin-top: 5px">
+      <div style="text-align: center; margin-top: 20px; margin-bottom: 20px">
+        <button [disabled]="!basicCollapse.collapsed"
+                class="btn btn-primary btn-sm"
+                (click)="basicCollapse.toggle(); this.show=!this.show;onChange(value)"
+                role="button"
+                [attr.aria-expanded]="basicCollapse.collapsed"
+                aria-controls="collapseExample">Yearly View</button>
+        <button [disabled]="basicCollapse.collapsed"
+                class="btn btn-primary btn-sm"
+                type="button"
+                (click)="basicCollapse.toggle(); onClick($event)"
+                [attr.aria-expanded]="!basicCollapse.collapsed"
+                aria-controls="collapseExample">Total View</button>
+
+        <div class="mt-3" id="collapseExample" [collapsed]="toggleBoolean" mdbCollapse #basicCollapse="mdbCollapse" >
+          <div *ngIf="loaded" style="width: 50%; margin: auto; font-size: 10px">
+            <ngx-slider [(value)]="value" (valueChange)="onChange($event)" [options]="sliderOptions"></ngx-slider>
+          </div>
+        </div>
+    </div>
+  </div>
+    <div class="col-md-2 bg-light d-flex flex-wrap overflow-x-scroll" style="max-height: 60vh;">
+      <div class="sticky-top bg-light text-center" *ngIf="exhibitions.length!>0" style="width:100vw">
         <p *ngIf="year==null" class="fw-bold"><small>Exhibitions in {{exhibitions[0].locations[0].city}}</small></p>
         <p *ngIf="year!=null" class="fw-bold"><small>Exhibitions in {{exhibitions[0].locations[0].city}}, {{year}}</small></p>
       </div>
       <div class="align-self-center" *ngIf="exhibitions.length===0">
         <p class="fs-10 fw-lighter font-italic">No exhibitions selected</p>
       </div>
-      <div style="overflow-y: auto; max-height: 445px; margin-top: 40px">
+      <div class="overflow-y-scroll text-center">
         <ul *ngFor="let exhibition of exhibitions!; index as i" class="list-group-large list-unstyled">
           <li class="list-group-item ms-0 me-auto border-right-0 border-left-0">
             <p class="fs-6 fw-bold"><small> {{exhibition.title}}</small></p>
@@ -23,13 +44,13 @@
             <p *ngIf="exhibition.endYear!=0"> <small>Exh. Period: <b>{{exhibition.startYear}} - {{exhibition.endYear}}</b></small></p>
             <p class="mb-0"><small>Catalogue entries: <b>{{exhibition.numCatalogueEntries}}</b></small></p>
             <p><small>Artists: <b>{{exhibition.numArtists}}</b></small></p>
-            <a target="_blank" rel="noopener noreferrer" href="https://exhibitions.univie.ac.at/exhibition/{{exhibition.id}}" class="badge badge-primary rounded-pill">More information</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://exhibitions.univie.ac.at/exhibition/{{exhibition.id}}" class="badge badge-primary rounded-pill">More</a>
           </li>
         </ul>
       </div>
   </div>
   </div>
-  <div style="text-align: center; margin-top: 20px">
+  <!--<div style="text-align: center; margin-top: 20px">
     <button [disabled]="!basicCollapse.collapsed"
       class="btn btn-primary"
             (click)="basicCollapse.toggle(); this.show=!this.show;onChange(value)"
@@ -45,9 +66,9 @@
 
     <div class="mt-3" id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse" >
       <div *ngIf="loaded" style="width: 50%; margin: auto;">
-        <ngx-slider (valueChange)="onChange($event)" [options]="sliderOptions"></ngx-slider>
+        <ngx-slider [(value)]="value" (valueChange)="onChange($event)" [options]="sliderOptions"></ngx-slider>
       </div>
     </div>
-  </div>
+  </div>-->
 </div>
 

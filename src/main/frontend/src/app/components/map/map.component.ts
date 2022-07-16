@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
 import {GeoJSON, latLng, tileLayer} from 'leaflet';
 import {ExhibitionService} from "../../services/exhibition.service";
@@ -8,6 +8,7 @@ import 'leaflet.markercluster';
 import {Feature} from "geojson";
 import {ExhibitionDto} from "../../dtos/ExhibitionDto";
 import {Observable, ReplaySubject} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -17,6 +18,9 @@ import {Observable, ReplaySubject} from "rxjs";
 })
 export class MapComponent implements OnInit {
 
+ // @ViewChild(basic) collapse!: ElementRef;
+ // @ViewChild(MdbCollapseDirective) new: any;
+
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     detectRetina: true,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -24,7 +28,9 @@ export class MapComponent implements OnInit {
 
   show: boolean = false;
   year: number | null = 0;
+  artistIds: number[] = [];
   loaded: boolean = false;
+  toggleBoolean: boolean = true;
   exhibitionsLoaded: boolean = false;
   exhibitions: ExhibitionDto[] = [];
   locations: LocationDto[] = [];
@@ -55,12 +61,23 @@ export class MapComponent implements OnInit {
     ]
   };
 
-  constructor(private exhibitionService: ExhibitionService, private cdr:ChangeDetectorRef) {
+  constructor(private exhibitionService: ExhibitionService, private cdr:ChangeDetectorRef, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.loadExhibitions();
-    this.loadExhibitionsYearly();
+    if (!this.route.snapshot.queryParams['artists']){
+  //    this.value = 1910;
+    this.loadExhibitions(null);
+    this.loadExhibitionsYearly(null);
+    }
+
+
+    if (this.route.snapshot.queryParams['artists']) {
+      console.log('artists: ', this.route.snapshot.queryParams['artists']);
+      this.artistIds = [this.route.snapshot.queryParams['artists']];
+      this.loadExhibitions(this.artistIds);
+      this.loadExhibitionsYearly(this.artistIds);
+    }
   }
 
   markerClusterGroup!: L.MarkerClusterGroup;
@@ -76,9 +93,14 @@ export class MapComponent implements OnInit {
 
   onChange(e: any) {
     if(this.show) {
+      console.log(e)
       this.value = e;
       this.data = this.yearlyExhibitions.get(this.value)!;
     }
+  }
+
+  toggle(){
+    this.toggleBoolean = !this.toggleBoolean;
   }
 
   onClick(e: any) {
@@ -104,8 +126,8 @@ export class MapComponent implements OnInit {
     )
   }
 
-  private loadExhibitions() {
-    this.exhibitionService.getExhibitionLocations().subscribe(
+  private loadExhibitions(artistIds: number[]|null) {
+    this.exhibitionService.getExhibitionLocations(artistIds).subscribe(
       data => {
         this.features = data.features;
         const size = this.biggestNumberInArray(this.features)
@@ -125,7 +147,7 @@ export class MapComponent implements OnInit {
                                       })
                   })
                 }
-              }).on('click', this.showExhibitions.bind(this, null, f.geometry.type ==="Point"? f.geometry.coordinates : null, null)));
+              }).on('click', this.showExhibitions.bind(this, null, f.geometry.type ==="Point"? f.geometry.coordinates : null, artistIds)));
           }
         )
         this.data = this.totalExhibitions;
@@ -141,9 +163,9 @@ export class MapComponent implements OnInit {
      return maxNumber;
    }
 
-  private loadExhibitionsYearly() {
+  private loadExhibitionsYearly(artistIds: number[]|null) {
 
-    this.exhibitionService.getExhibitionLocationsYearly().subscribe(
+    this.exhibitionService.getExhibitionLocationsYearly(artistIds).subscribe(
       data => {
           this.features = data.features;
 
@@ -178,7 +200,7 @@ export class MapComponent implements OnInit {
                           })
                         })
                       }
-                    }).on('click', this.showExhibitions.bind(this, key, f.geometry.type ==="Point"? f.geometry.coordinates : null, null)))
+                    }).on('click', this.showExhibitions.bind(this, key, f.geometry.type ==="Point"? f.geometry.coordinates : null, artistIds)))
                 this.yearlyExhibitions.set(key, arr!);
               } else {
                 const newArr: GeoJSON[] = [];
@@ -193,11 +215,12 @@ export class MapComponent implements OnInit {
                         })
                       })
                     }
-                  }).on('click', this.showExhibitions.bind(this, key, f.geometry.type ==="Point"? f.geometry.coordinates : null, null)))
+                  }).on('click', this.showExhibitions.bind(this, key, f.geometry.type ==="Point"? f.geometry.coordinates : null, artistIds)))
                 this.yearlyExhibitions.set(key, newArr);
               }
               }
           )
+       // this.show=!this.show;this.onChange(1910);this.toggleBoolean=false;
       }
     );
 }
