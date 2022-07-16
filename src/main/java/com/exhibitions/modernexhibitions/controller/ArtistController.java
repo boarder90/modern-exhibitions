@@ -27,8 +27,14 @@ public class ArtistController {
         return modelMapper.map(this.artistService.getArtistById(id), ArtistDto.class);
     }
 
+    @GetMapping("/ids")
+    public List<ArtistDto> getArtistByIds(@RequestParam List<Integer> ids) {
+        return artistService.getArtistsByIds(ids).stream().
+                map(entity -> modelMapper.map(entity, ArtistDto.class)).collect(Collectors.toList());
+    }
+
     @GetMapping("/name")
-    public List<ArtistDto> getArtistById(@RequestParam() String name) {
+    public List<ArtistDto> getArtistByName(@RequestParam() String name) {
         return artistService.getArtistsByName(name).stream()
                 .map(entity -> modelMapper.map(entity, ArtistDto.class))
                 .collect(Collectors.toList());

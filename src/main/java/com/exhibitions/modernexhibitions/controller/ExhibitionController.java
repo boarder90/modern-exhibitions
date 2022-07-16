@@ -1,9 +1,7 @@
 package com.exhibitions.modernexhibitions.controller;
 
 import com.exhibitions.modernexhibitions.dto.ExhibitionDto;
-import com.exhibitions.modernexhibitions.dto.ExhibitionsByLocationDto;
 import com.exhibitions.modernexhibitions.dto.FeatureCollectionDto;
-import com.exhibitions.modernexhibitions.mapper.CustomExhibitionMapper;
 import com.exhibitions.modernexhibitions.service.ExhibitionService;
 import com.exhibitions.modernexhibitions.service.NonDomainService;
 import org.modelmapper.ModelMapper;
@@ -20,50 +18,40 @@ import java.util.stream.Collectors;
 @RequestMapping(ExhibitionController.BASE_URL)
 public class ExhibitionController {
     private final ModelMapper modelMapper;
-    private final CustomExhibitionMapper customExhibitionMapper;
     private final NonDomainService nonDomainService;
     private final ExhibitionService exhibitionService;
     static final String BASE_URL = "exhibitions";
 
     @Autowired
-    public ExhibitionController(ModelMapper modelMapper, ExhibitionService exhibitionService, CustomExhibitionMapper customExhibitionMapper, NonDomainService nonDomainService){
+    public ExhibitionController(ModelMapper modelMapper, ExhibitionService exhibitionService, NonDomainService nonDomainService){
         this.modelMapper = modelMapper;
         this.exhibitionService = exhibitionService;
         this.nonDomainService = nonDomainService;
-        this.customExhibitionMapper = customExhibitionMapper;
     }
 
     @GetMapping()
     public List<ExhibitionDto> getAllExhibitions() {
-        //return customExhibitionMapper.exhibitionsToExhibitionsByLocationDto(exhibitionService.findAll());
          return exhibitionService.findAll().stream()
                 .map(entity -> modelMapper.map(entity, ExhibitionDto.class))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/locations")
-    public FeatureCollectionDto getFeatureCollection() {
-        return nonDomainService.getExhibitionLocationsAsGeoJSON();
-        /* return exhibitionService.findAll().stream()
-                .map(entity -> modelMapper.map(entity, ExhibitionDto.class))
-                .collect(Collectors.toList());*/
+    public FeatureCollectionDto getFeatureCollection(@RequestParam(required = false) List<Integer> artistIds) {
+        return nonDomainService.getExhibitionLocationsAsGeoJSON(artistIds);
     }
 
     @GetMapping("/locations/yearly")
-    public FeatureCollectionDto getYearlyFeatureCollection() {
-        return nonDomainService.getExhibitionLocationsYearlyAsGeoJSON();
-        /* return exhibitionService.findAll().stream()
-                .map(entity -> modelMapper.map(entity, ExhibitionDto.class))
-                .collect(Collectors.toList());*/
+    public FeatureCollectionDto getYearlyFeatureCollection(@RequestParam(required = false) List<Integer> artistIds) {
+        return nonDomainService.getExhibitionLocationsYearlyAsGeoJSON(artistIds);
     }
 
     @GetMapping("/filtered")
     public List<ExhibitionDto> getFilteredExhibitions(
             @RequestParam(required = false) List<Double> coordinates,
             @RequestParam(required=false) List<Integer> artistIds,
-            @RequestParam(required=false) Integer year
-    ) {
-        System.out.println(coordinates+ " " + artistIds+ " "+ year);
+            @RequestParam(required=false) Integer year)
+    {
         return exhibitionService.findExhibitionsFiltered(coordinates,artistIds,year).stream()
                 .map(entity -> modelMapper.map(entity, ExhibitionDto.class))
                 .collect(Collectors.toList());
