@@ -16,8 +16,4 @@ public class ArtistDto {
     private String nationality;
     private String sex;
     private String occupation;
-    private List<ArtistDto> coArtistsOutgoing;
-    private List<ArtistDto> coArtistsIncoming;
-    private List<ArtistDto> coArtistsTotalOutgoing;
-    private List<ArtistDto> coArtistsTotalIncoming;
 }

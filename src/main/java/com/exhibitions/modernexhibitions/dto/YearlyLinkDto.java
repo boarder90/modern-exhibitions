@@ -11,8 +11,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class YearlyLinkDto {
 
-    private Integer startId;
-    private Integer endId;
+    private Integer source;
+    private Integer target;
     private Integer startYear;
     private Integer endYear;
     private Integer numExhibitions;

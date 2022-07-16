@@ -8,8 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 public class LinkDto {
 
-    private Integer startId;
-    private Integer endId;
+    private Integer source;
+    private Integer target;
     private Integer[] startYears;
     private Integer[] endYears;
     private Integer numExhibitions;
