@@ -1,9 +1,7 @@
 package com.exhibitions.modernexhibitions.mapper;
 
 import com.exhibitions.modernexhibitions.dto.LinkDto;
-import com.exhibitions.modernexhibitions.dto.YearlyArtistNetworkDto;
 import com.exhibitions.modernexhibitions.dto.YearlyLinkDto;
-import com.exhibitions.modernexhibitions.entity.Artist;
 import com.exhibitions.modernexhibitions.repository.projection.ArtistProjectionTotalNetwork;
 import com.exhibitions.modernexhibitions.repository.projection.ArtistProjectionYearlyNetwork;
 import org.springframework.stereotype.Component;
