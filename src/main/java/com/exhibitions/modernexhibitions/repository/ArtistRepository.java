@@ -19,7 +19,7 @@ public interface ArtistRepository extends Neo4jRepository<Artist,Integer> {
     @Query("MATCH (a1:Artist) WHERE a1.id in $ids RETURN a1")
     List<ArtistProjection> getArtistsByByIds(List<Integer> ids);
 
-    @Query("MATCH (a1:Artist) WHERE toLower(a1.name) CONTAINS ?#{#name} RETURN a1;")
+    @Query("MATCH (a1:Artist) WHERE toLower(a1.name) CONTAINS toLower(?#{#name}) RETURN a1 LIMIT 100;")
     List<ArtistProjection> getArtistsByName(String name);
 
     @Query("match (a1:Artist)-[e:EXHIBITS_WITH]-(a2:Artist) where a1.id=$id and e.numExhibitions>=$numExhibitions and" +

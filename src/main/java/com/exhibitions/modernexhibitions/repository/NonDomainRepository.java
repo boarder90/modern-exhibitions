@@ -12,23 +12,14 @@ import java.util.List;
 @Repository
 public interface NonDomainRepository {
 
-   /* @Transactional(readOnly = true)
-    List<LinkDto> getEgoNetworkRelationships(Integer id, Integer numExhibitions);
+    @Transactional(readOnly = true)
+    FeatureCollectionDto getExhibitionLocationsAsGeoJSON(List<Integer> artistIds);
 
     @Transactional(readOnly = true)
-    List<LinkDto> getEgoNetworkOneHalfRelationships(Integer id, Integer numExhibitions);
+    FeatureCollectionDto getExhibitionLocationsYearlyAsGeoJSON(List<Integer> artistIds);
 
     @Transactional(readOnly = true)
-    List<LinkDto> getNetworkRelationshipsByIds(List<Integer> id, Integer numExhibitions);*/
-
-    @Transactional(readOnly = true)
-    FeatureCollectionDto getExhibitionLocationsAsGeoJSON();
-
-    @Transactional(readOnly = true)
-    FeatureCollectionDto getExhibitionLocationsYearlyAsGeoJSON();
-
-    @Transactional(readOnly = true)
-    List<FeatureDto> getExhibitionLocationsByEndYear();
+    List<FeatureDto> getExhibitionLocationsByEndYear(List<Integer> artistIds);
 
 
 }
