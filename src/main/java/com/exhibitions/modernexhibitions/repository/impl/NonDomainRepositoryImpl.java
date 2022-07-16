@@ -111,26 +111,48 @@ public class NonDomainRepositoryImpl implements NonDomainRepository {
     }
 
     @Override
-    public FeatureCollectionDto getExhibitionLocationsAsGeoJSON() {
-        Collection<FeatureDto> result = this.neo4jClient.query("match(e:Exhibition)-[:TAKES_PLACE]->(l:Location)" +
-                        " where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(distinct e) as numExhibitions")
-                .fetchAs(FeatureDto.class).mappedBy((typeSystem, record) ->
+    public FeatureCollectionDto getExhibitionLocationsAsGeoJSON(List<Integer> artistIds) {
+        Collection<FeatureDto> result = this.neo4jClient.query("""
+                        CALL apoc.do.when($artistIds IS NOT NULL,
+                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(distinct e) as numExhibitions',
+                          'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(distinct e) as numExhibitions',
+                          {artistIds:$artistIds}
+                        )
+                        YIELD value
+                        RETURN value.longitude AS longitude, value.latitude AS latitude, value.numExhibitions as numExhibitions ;
+                        """).
+                bind(artistIds).to("artistIds").fetchAs(FeatureDto.class).mappedBy((typeSystem, record) ->
                         new FeatureDto(new FeatureDto.PropertyDto(record.get("numExhibitions").asInt(),null), new FeatureDto.GeometryDto(Arrays.stream(new Double[]{ record.get("longitude").asDouble(),record.get("latitude").asDouble()}).toList()))).all();
         return new FeatureCollectionDto(result.stream().toList());
     }
 
     @Override
-    public FeatureCollectionDto getExhibitionLocationsYearlyAsGeoJSON() {
-        Collection<FeatureDto> result = this.neo4jClient.query("match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(distinct e) as numExhibitions")
-                .fetchAs(FeatureDto.class).mappedBy((typeSystem, record) ->
-                        new FeatureDto(new FeatureDto.PropertyDto(record.get("numExhibitions").asInt(),record.get("year").asInt()), new FeatureDto.GeometryDto(Arrays.stream(new Double[]{ record.get("longitude").asDouble(),record.get("latitude").asDouble()}).toList()))).all();
+    public FeatureCollectionDto getExhibitionLocationsYearlyAsGeoJSON(List<Integer> artistIds) {
+        Collection<FeatureDto> result = this.neo4jClient.query("""
+                        CALL apoc.do.when($artistIds IS NOT NULL,
+                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(distinct e) as numExhibitions',
+                          'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(distinct e) as numExhibitions',
+                          {artistIds: $artistIds}
+                        )
+                        YIELD value
+                        RETURN value.longitude AS longitude, value.latitude AS latitude, value.year as year, value.numExhibitions as numExhibitions ;""")
+                .bind(artistIds).to("artistIds").fetchAs(FeatureDto.class).mappedBy((typeSystem, record) ->
+                        new FeatureDto(new FeatureDto.PropertyDto(record.get("numExhibitions").asInt(), record.get("year").asInt()), new FeatureDto.GeometryDto(Arrays.stream(new Double[]{record.get("longitude").asDouble(), record.get("latitude").asDouble()}).toList()))).all();
         return new FeatureCollectionDto(result.stream().toList());
     }
 
+
     @Override
-    public List<FeatureDto> getExhibitionLocationsByEndYear() {
-        Collection<FeatureDto> result = this.neo4jClient.query("    match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL and e.endYear IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.endYear as year, count(distinct e) as numExhibitions")
-                .fetchAs(FeatureDto.class).mappedBy((typeSystem, record) ->
+    public List<FeatureDto> getExhibitionLocationsByEndYear(List<Integer> artistIds) {
+        Collection<FeatureDto> result = this.neo4jClient.query("""
+                        CALL apoc.do.when($artistIds IS NOT NULL,
+                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and l.longitude IS NOT NULL and e.endYear IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.endYear as year, count(distinct e) as numExhibitions',
+                          'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL and e.endYear IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.endYear as year, count(distinct e) as numExhibitions',
+                          {artistIds: $artistIds}
+                        )
+                        YIELD value
+                        RETURN value.longitude AS longitude, value.latitude AS latitude, value.year as year, value.numExhibitions as numExhibitions ;""")
+                .bind(artistIds).to("artistIds").fetchAs(FeatureDto.class).mappedBy((typeSystem, record) ->
                         new FeatureDto(new FeatureDto.PropertyDto(record.get("numExhibitions").asInt(), record.get("year").asInt()), new FeatureDto.GeometryDto(Arrays.stream(new Double[]{record.get("longitude").asDouble(),record.get("latitude").asDouble()}).toList()))).all();
         return result.stream().toList();
     }
