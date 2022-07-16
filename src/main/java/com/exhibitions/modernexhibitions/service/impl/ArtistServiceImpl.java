@@ -1,6 +1,5 @@
 package com.exhibitions.modernexhibitions.service.impl;
 
-import com.exhibitions.modernexhibitions.entity.Artist;
 import com.exhibitions.modernexhibitions.exception.NotFoundException;
 import com.exhibitions.modernexhibitions.repository.ArtistRepository;
 import com.exhibitions.modernexhibitions.repository.projection.ArtistProjection;
@@ -40,8 +39,6 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistProjection> getArtistsByName(String name) {
-        System.out.println(name);
-        System.out.println(artistRepository.getArtistsByName(name));
         return artistRepository.getArtistsByName(name);
     }
 
@@ -71,7 +68,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<ArtistProjectionYearlyNetwork> getNetworkByIds(List<Integer>ids, Integer numExhibitions, Integer year) {
+    public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIds(List<Integer>ids, Integer numExhibitions, Integer year) {
         return artistRepository.getNetworkByIds(ids,numExhibitions,year);
     }
 

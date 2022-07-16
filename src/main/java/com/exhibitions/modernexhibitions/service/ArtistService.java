@@ -16,7 +16,7 @@ public interface ArtistService {
     List<ArtistProjection> getArtistsOfEgoNetwork(Integer id,Integer numExhibitions) throws NotFoundException;
     List<ArtistProjectionYearlyNetwork> getYearlyEgoNetworkOne(Integer id, Integer numExhibitions, Integer year) throws NotFoundException;
     List<ArtistProjectionYearlyNetwork> getYearlyEgoNetworkOneHalf(Integer id, Integer numExhibitions, Integer year) throws NotFoundException;
-    List<ArtistProjectionYearlyNetwork> getNetworkByIds(List<Integer> ids,Integer numExhibitions, Integer year);
+    List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIds(List<Integer> ids,Integer numExhibitions, Integer year);
     List<ArtistProjectionTotalNetwork> getTotalEgoNetworkOne(Integer id, Integer numExhibitions) throws NotFoundException;
     List<ArtistProjectionTotalNetwork> getTotalEgoNetworkOneHalf(Integer id, Integer numExhibitions) throws NotFoundException;
     List<ArtistProjectionTotalNetwork> getTotalNetworkByIds(List<Integer> ids, Integer numExhibitions);
