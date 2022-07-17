@@ -3,6 +3,7 @@ package com.exhibitions.modernexhibitions.repository.impl;
 import com.exhibitions.modernexhibitions.dto.FeatureCollectionDto;
 import com.exhibitions.modernexhibitions.dto.FeatureDto;
 import com.exhibitions.modernexhibitions.dto.LinkDto;
+import com.exhibitions.modernexhibitions.dto.LocationsOfNetworkDto;
 import com.exhibitions.modernexhibitions.entity.Artist;
 import com.exhibitions.modernexhibitions.repository.NonDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class NonDomainRepositoryImpl implements NonDomainRepository {
@@ -68,5 +70,22 @@ public class NonDomainRepositoryImpl implements NonDomainRepository {
                 .bind(artistIds).to("artistIds").fetchAs(FeatureDto.class).mappedBy((typeSystem, record) ->
                         new FeatureDto(new FeatureDto.PropertyDto(record.get("numExhibitions").asInt(), record.get("year").asInt()), new FeatureDto.GeometryDto(Arrays.stream(new Double[]{record.get("longitude").asDouble(),record.get("latitude").asDouble()}).toList()))).all();
         return result.stream().toList();
+    }
+
+    @Override
+    public LocationsOfNetworkDto getLocationsOfNetwork(List<Integer> artistIds) {
+        Optional<LocationsOfNetworkDto> result = this.neo4jClient.query("MATCH (a1:Artist)-[e:EXHIBITS_WITH]-(a2:Artist)" +
+                " WHERE  a1.id in $artistIds and a2.id in $artistIds and id(a1)<id(a2) " +
+                "WITH REDUCE(s = [], countries IN COLLECT(e.countries)| CASE WHEN countries IN s THEN s ELSE s " +
+                "+ countries END) as countries, REDUCE(s = [], cities IN COLLECT(e.cities) | s + cities) as" +
+                " cities WITH countries, cities RETURN REDUCE(distinctElements = [], element IN countries | " +
+                "CASE WHEN NOT element in distinctElements THEN distinctElements + element ELSE distinctElements END)" +
+                " as countries, REDUCE(distinctElements = [], element IN cities | CASE WHEN NOT element in distinctElements " +
+                "THEN distinctElements + element ELSE distinctElements END) as cities").bind(artistIds).
+                to("artistIds").fetchAs(LocationsOfNetworkDto.class).
+                mappedBy(((typeSystem, record) -> new LocationsOfNetworkDto(Arrays.stream(record.get("cities").asList().toArray())
+                        .map(o -> (String) o).toArray(String[]::new), Arrays.stream(record.get("countries").asList().toArray())
+                        .map(o -> (String) o).toArray(String[]::new)))).first();
+        return result.orElseGet(() -> new LocationsOfNetworkDto(new String[0], new String[0]));
     }
 }

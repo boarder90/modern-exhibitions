@@ -3,6 +3,7 @@ package com.exhibitions.modernexhibitions.repository;
 import com.exhibitions.modernexhibitions.dto.FeatureCollectionDto;
 import com.exhibitions.modernexhibitions.dto.FeatureDto;
 import com.exhibitions.modernexhibitions.dto.LinkDto;
+import com.exhibitions.modernexhibitions.dto.LocationsOfNetworkDto;
 import com.exhibitions.modernexhibitions.entity.Artist;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,9 @@ public interface NonDomainRepository {
 
     @Transactional(readOnly = true)
     List<FeatureDto> getExhibitionLocationsByEndYear(List<Integer> artistIds);
+
+    @Transactional(readOnly = true)
+    LocationsOfNetworkDto getLocationsOfNetwork(List<Integer> artistIds);
 
 
 }

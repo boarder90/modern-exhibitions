@@ -2,6 +2,7 @@ package com.exhibitions.modernexhibitions.service.impl;
 
 import com.exhibitions.modernexhibitions.dto.FeatureCollectionDto;
 import com.exhibitions.modernexhibitions.dto.FeatureDto;
+import com.exhibitions.modernexhibitions.dto.LocationsOfNetworkDto;
 import com.exhibitions.modernexhibitions.repository.NonDomainRepository;
 import com.exhibitions.modernexhibitions.service.NonDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,10 @@ public class NonDomainServiceImpl implements NonDomainService {
             }
         }
         return featureCollectionDto;
+    }
+
+    @Override
+    public LocationsOfNetworkDto getLocationsOfNetwork(List<Integer> artistIds) {
+        return nonDomainRepository.getLocationsOfNetwork(artistIds);
     }
 }
