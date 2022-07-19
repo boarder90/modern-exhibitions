@@ -1,6 +1,6 @@
 package com.exhibitions.modernexhibitions.service.impl;
 
-import com.exhibitions.modernexhibitions.entity.Artist;
+import com.exhibitions.modernexhibitions.entity.ExhibitsWith;
 import com.exhibitions.modernexhibitions.entity.ExhibitsWithTotal;
 import com.exhibitions.modernexhibitions.exception.NotFoundException;
 import com.exhibitions.modernexhibitions.repository.ArtistRepository;
@@ -98,10 +98,10 @@ public class ArtistServiceImpl implements ArtistService {
         List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCountry(ids, country);
         for (ArtistProjectionTotalNetwork a: artists) {
             for (int i=0; i <a.getCoArtistsTotalIncoming().toArray().length;i++){
-                a.getCoArtistsTotalIncoming().toArray()[i] = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalIncoming().toArray()[i],country,"country");
+                a.getCoArtistsTotalIncoming().toArray()[i] = filterLinksTotal((ExhibitsWithTotal) a.getCoArtistsTotalIncoming().toArray()[i],country,"country");
             }
             for (int i=0;i < a.getCoArtistsTotalOutgoing().toArray().length; i++){
-                a.getCoArtistsTotalOutgoing().toArray()[i]  = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalOutgoing().toArray()[i], country,"country");
+                a.getCoArtistsTotalOutgoing().toArray()[i]  = filterLinksTotal((ExhibitsWithTotal) a.getCoArtistsTotalOutgoing().toArray()[i], country,"country");
             }
         }
         return artists;
@@ -112,17 +112,48 @@ public class ArtistServiceImpl implements ArtistService {
         List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCity(ids, city);
         for (ArtistProjectionTotalNetwork a: artists) {
             for (int i=0; i <a.getCoArtistsTotalIncoming().toArray().length;i++){
-                a.getCoArtistsTotalIncoming().toArray()[i] = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalIncoming().toArray()[i],city,"city");
+                a.getCoArtistsTotalIncoming().toArray()[i] = filterLinksTotal((ExhibitsWithTotal) a.getCoArtistsTotalIncoming().toArray()[i],city,"city");
             }
             for (int i=0;i < a.getCoArtistsTotalOutgoing().toArray().length; i++){
-                a.getCoArtistsTotalOutgoing().toArray()[i]  = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalOutgoing().toArray()[i], city,"city");
+                a.getCoArtistsTotalOutgoing().toArray()[i]  = filterLinksTotal((ExhibitsWithTotal) a.getCoArtistsTotalOutgoing().toArray()[i], city,"city");
             }
         }
 
         return artists;
     }
 
-    private ExhibitsWithTotal filterLinks(ExhibitsWithTotal e, String location, String granularity){
+    @Override
+    public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIdsFilteredByCountry(List<Integer> ids, String country, Integer year) {
+        List<ArtistProjectionYearlyNetwork> artists  = artistRepository.getYearlyNetworkByIdsFilteredByCountry(ids, country, year);
+
+        for (ArtistProjectionYearlyNetwork a: artists) {
+            for (int i=0; i <a.getCoArtistsIncoming().toArray().length;i++){
+                a.getCoArtistsIncoming().toArray()[i] = filterLinksYearly((ExhibitsWith) a.getCoArtistsIncoming().toArray()[i],country,"country");
+            }
+            for (int i=0;i < a.getCoArtistsOutgoing().toArray().length; i++){
+                a.getCoArtistsOutgoing().toArray()[i]  = filterLinksYearly((ExhibitsWith) a.getCoArtistsOutgoing().toArray()[i], country,"country");
+            }
+        }
+
+        return artists;
+    }
+
+    @Override
+    public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIdsFilteredByCity(List<Integer> ids, String city, Integer year) {
+        List<ArtistProjectionYearlyNetwork> artists  = artistRepository.getYearlyNetworkByIdsFilteredByCity(ids, city, year);
+
+        for (ArtistProjectionYearlyNetwork a: artists) {
+            for (int i=0; i <a.getCoArtistsIncoming().toArray().length;i++){
+                a.getCoArtistsIncoming().toArray()[i] = filterLinksYearly((ExhibitsWith) a.getCoArtistsIncoming().toArray()[i],city,"city");
+            }
+            for (int i=0;i < a.getCoArtistsOutgoing().toArray().length; i++){
+                a.getCoArtistsOutgoing().toArray()[i]  = filterLinksYearly((ExhibitsWith) a.getCoArtistsOutgoing().toArray()[i], city,"city");
+            }
+        }
+        return artists;
+    }
+
+    private ExhibitsWithTotal filterLinksTotal(ExhibitsWithTotal e, String location, String granularity){
         ArrayList<String> countries = new ArrayList<>();
         ArrayList<String> cities = new ArrayList<>();
         ArrayList<Integer> startYears = new ArrayList<>();
@@ -134,7 +165,6 @@ public class ArtistServiceImpl implements ArtistService {
                     cities.add(e.getCities()[i]);
                     startYears.add(e.getStartYears()[i]);
                     e.setNumExhibitions(numExhibitions++);
-                   // System.out.println(e.getCities()[i]);
                 }
             }
         } else {
@@ -150,6 +180,32 @@ public class ArtistServiceImpl implements ArtistService {
         e.setCountries(countries.toArray(String[]::new));
         e.setCities(cities.toArray(String[]::new));
         e.setStartYears(startYears.toArray(Integer[]::new));
+        return e;
+    }
+
+    private ExhibitsWith filterLinksYearly(ExhibitsWith e, String location, String granularity){
+        ArrayList<String> countries = new ArrayList<>();
+        ArrayList<String> cities = new ArrayList<>();
+        int numExhibitions = 1;
+        if(Objects.equals(granularity, "city")){
+            for (int i = 0; i < e.getCountries().length; i++) {
+                if(Objects.equals(e.getCities()[i], location)){
+                    countries.add(e.getCountries()[i]);
+                    cities.add(e.getCities()[i]);
+                    e.setNumExhibitions(numExhibitions++);
+                }
+            }
+        } else {
+            for (int i = 0; i < e.getCountries().length; i++) {
+                if(Objects.equals(e.getCountries()[i], location)){
+                    countries.add(e.getCountries()[i]);
+                    cities.add(e.getCities()[i]);
+                    e.setNumExhibitions(numExhibitions++);
+                }
+            }
+        }
+        e.setCountries(countries.toArray(String[]::new));
+        e.setCities(cities.toArray(String[]::new));
         return e;
     }
 }

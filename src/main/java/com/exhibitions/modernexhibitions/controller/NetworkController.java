@@ -116,5 +116,35 @@ public class NetworkController {
                 customNetworkMapper.artistsToLinkDtoList(artists));
     }
 
+    @GetMapping("yearly/all/country")
+    public List<ArtistNetworkAllYearsDto> getAllYearlyNetworksFilteredByCountry(@RequestParam() List<Integer> ids,
+                                                               @RequestParam() String country) {
+
+        List<ArtistDto> artistDtos = artistService.getArtistsByIds(ids).stream().
+                map(entity -> modelMapper.map(entity, ArtistDto.class)).toList();
+        List<ArtistNetworkAllYearsDto> networks = new ArrayList<>();
+        for (Integer y:YEARS) {
+            networks.add(new ArtistNetworkAllYearsDto(y, new YearlyArtistNetworkDto(artistDtos,
+                    customNetworkMapper.artistsToYearlyLinkDtoList(artistService.getYearlyNetworkByIdsFilteredByCountry(ids,country,y)))));
+        }
+        return networks;
+    }
+
+    @GetMapping("yearly/all/city")
+    public List<ArtistNetworkAllYearsDto> getAllYearlyNetworksFilteredByCity(@RequestParam() List<Integer> ids,
+                                                                                @RequestParam() String city) {
+
+        List<ArtistDto> artistDtos = artistService.getArtistsByIds(ids).stream().
+                map(entity -> modelMapper.map(entity, ArtistDto.class)).toList();
+        List<ArtistNetworkAllYearsDto> networks = new ArrayList<>();
+        for (Integer y:YEARS) {
+            networks.add(new ArtistNetworkAllYearsDto(y, new YearlyArtistNetworkDto(artistDtos,
+                    customNetworkMapper.artistsToYearlyLinkDtoList(artistService.getYearlyNetworkByIdsFilteredByCity(ids,city,y)))));
+        }
+        return networks;
+    }
+
+
+
 
 }
