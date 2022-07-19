@@ -1,19 +1,21 @@
 package com.exhibitions.modernexhibitions.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
 
 @RelationshipProperties
 @Getter
+@Setter
 public class ExhibitsWith {
 
     @RelationshipId
     private Long id;
-    private final Integer startYear;
-    private final Integer endYear;
-    private final Integer numExhibitions;
-    private final String[] cities;
-    private final String[] countries;
+    private Integer startYear;
+    private Integer endYear;
+    private Integer numExhibitions;
+    private String[] cities;
+    private String[] countries;
 
     @TargetNode
     private final Artist artist;

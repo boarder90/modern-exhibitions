@@ -66,5 +66,13 @@ public interface ArtistRepository extends Neo4jRepository<Artist,Integer> {
             " a1.id in $ids and a2.id in $ids and id(a1)<id(a2) RETURN a1, collect(e), collect(a2)")
     List<ArtistProjectionTotalNetwork> getTotalNetworkByIds(List<Integer> ids, Integer numExhibitions);
 
+    @Query("MATCH (a1:Artist)-[e:EXHIBITS_WITH_TOTAL]-(a2:Artist) WHERE  a1.id in $ids and a2.id in $ids" +
+            " and id(a1)<id(a2) and any(x IN e.countries WHERE x IN [$country]) RETURN a1,collect(e),collect(a2)")
+    List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCountry(List<Integer> ids, String country);
+
+    @Query("MATCH (a1:Artist)-[e:EXHIBITS_WITH_TOTAL]-(a2:Artist) WHERE  a1.id in $ids and a2.id in $ids" +
+            " and id(a1)<id(a2) and any(x IN e.cities WHERE x IN [$city]) RETURN a1,collect(e),collect(a2)")
+    List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCity(List<Integer> ids, String city);
+
 
 }

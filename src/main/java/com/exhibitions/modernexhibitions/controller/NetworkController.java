@@ -93,11 +93,28 @@ public class NetworkController {
     }
 
     @GetMapping()
-    public ArtistNetworkDto getNetworkByIds(@RequestParam() List<Integer> ids,
+    public ArtistNetworkDto getTotalNetworkByIds(@RequestParam() List<Integer> ids,
                                             @RequestParam(required = false, defaultValue = "0") Integer numExhibitions) {
         List<ArtistProjectionTotalNetwork> artists = artistService.getTotalNetworkByIds(ids,numExhibitions);
         return new ArtistNetworkDto(artistService.getArtistsByIds(ids).stream().map(entity -> modelMapper.map(entity, ArtistDto.class)).collect(Collectors.toList()),
                 customNetworkMapper.artistsToLinkDtoList(artists));
     }
+
+    @GetMapping("/country")
+    public ArtistNetworkDto getTotalNetworkByIdsFilteredByCountry(@RequestParam() List<Integer> ids,
+                                                 @RequestParam() String country) {
+        List<ArtistProjectionTotalNetwork> artists = artistService.getTotalNetworkByIdsFilteredByCountry(ids,country);
+        return new ArtistNetworkDto(artistService.getArtistsByIds(ids).stream().map(entity -> modelMapper.map(entity, ArtistDto.class)).collect(Collectors.toList()),
+                customNetworkMapper.artistsToLinkDtoList(artists));
+    }
+
+    @GetMapping("/city")
+    public ArtistNetworkDto getTotalNetworkByIdsFilteredByCity(@RequestParam() List<Integer> ids,
+                                                                  @RequestParam() String city) {
+        List<ArtistProjectionTotalNetwork> artists = artistService.getTotalNetworkByIdsFilteredByCity(ids,city);
+        return new ArtistNetworkDto(artistService.getArtistsByIds(ids).stream().map(entity -> modelMapper.map(entity, ArtistDto.class)).collect(Collectors.toList()),
+                customNetworkMapper.artistsToLinkDtoList(artists));
+    }
+
 
 }

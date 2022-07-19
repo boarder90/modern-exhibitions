@@ -1,5 +1,7 @@
 package com.exhibitions.modernexhibitions.service.impl;
 
+import com.exhibitions.modernexhibitions.entity.Artist;
+import com.exhibitions.modernexhibitions.entity.ExhibitsWithTotal;
 import com.exhibitions.modernexhibitions.exception.NotFoundException;
 import com.exhibitions.modernexhibitions.repository.ArtistRepository;
 import com.exhibitions.modernexhibitions.repository.projection.ArtistProjection;
@@ -9,7 +11,9 @@ import com.exhibitions.modernexhibitions.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -89,5 +93,63 @@ public class ArtistServiceImpl implements ArtistService {
         return artistRepository.getTotalNetworkByIds(ids,numExhibitions);
     }
 
+    @Override
+    public List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCountry(List<Integer> ids, String country) {
+        List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCountry(ids, country);
+        for (ArtistProjectionTotalNetwork a: artists) {
+            for (int i=0; i <a.getCoArtistsTotalIncoming().toArray().length;i++){
+                a.getCoArtistsTotalIncoming().toArray()[i] = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalIncoming().toArray()[i],country,"country");
+            }
+            for (int i=0;i < a.getCoArtistsTotalOutgoing().toArray().length; i++){
+                a.getCoArtistsTotalOutgoing().toArray()[i]  = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalOutgoing().toArray()[i], country,"country");
+            }
+        }
+        return artists;
+    }
 
+    @Override
+    public List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCity(List<Integer> ids, String city) {
+        List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCity(ids, city);
+        for (ArtistProjectionTotalNetwork a: artists) {
+            for (int i=0; i <a.getCoArtistsTotalIncoming().toArray().length;i++){
+                a.getCoArtistsTotalIncoming().toArray()[i] = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalIncoming().toArray()[i],city,"city");
+            }
+            for (int i=0;i < a.getCoArtistsTotalOutgoing().toArray().length; i++){
+                a.getCoArtistsTotalOutgoing().toArray()[i]  = filterLinks((ExhibitsWithTotal) a.getCoArtistsTotalOutgoing().toArray()[i], city,"city");
+            }
+        }
+
+        return artists;
+    }
+
+    private ExhibitsWithTotal filterLinks(ExhibitsWithTotal e, String location, String granularity){
+        ArrayList<String> countries = new ArrayList<>();
+        ArrayList<String> cities = new ArrayList<>();
+        ArrayList<Integer> startYears = new ArrayList<>();
+        int numExhibitions = 1;
+        if(Objects.equals(granularity, "city")){
+            for (int i = 0; i < e.getStartYears().length; i++) {
+                if(Objects.equals(e.getCities()[i], location)){
+                    countries.add(e.getCountries()[i]);
+                    cities.add(e.getCities()[i]);
+                    startYears.add(e.getStartYears()[i]);
+                    e.setNumExhibitions(numExhibitions++);
+                   // System.out.println(e.getCities()[i]);
+                }
+            }
+        } else {
+            for (int i = 0; i < e.getStartYears().length; i++) {
+                if(Objects.equals(e.getCountries()[i], location)){
+                    countries.add(e.getCountries()[i]);
+                    cities.add(e.getCities()[i]);
+                    startYears.add(e.getStartYears()[i]);
+                    e.setNumExhibitions(numExhibitions++);
+                }
+            }
+        }
+        e.setCountries(countries.toArray(String[]::new));
+        e.setCities(cities.toArray(String[]::new));
+        e.setStartYears(startYears.toArray(Integer[]::new));
+        return e;
+    }
 }
