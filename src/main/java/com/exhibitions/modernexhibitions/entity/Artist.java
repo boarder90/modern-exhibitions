@@ -29,12 +29,12 @@ public class Artist {
     private String occupation;
 
     @Getter
-    @Relationship(type="EXHIBITS_WITH", direction = Relationship.Direction.OUTGOING)
-    private List<ExhibitsWith> coArtistsOutgoing;
+    @Relationship(type="EXHIBITS_WITH_YEARLY", direction = Relationship.Direction.OUTGOING)
+    private List<ExhibitsWithYearly> coArtistsOutgoing;
 
     @Getter
-    @Relationship(type="EXHIBITS_WITH", direction = Relationship.Direction.INCOMING)
-    private List<ExhibitsWith> coArtistsIncoming;
+    @Relationship(type="EXHIBITS_WITH_YEARLY", direction = Relationship.Direction.INCOMING)
+    private List<ExhibitsWithYearly> coArtistsIncoming;
 
     @Getter
     @Relationship(type="EXHIBITS_WITH_TOTAL", direction = Relationship.Direction.OUTGOING)

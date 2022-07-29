@@ -7,12 +7,11 @@ import org.springframework.data.neo4j.core.schema.*;
 @RelationshipProperties
 @Getter
 @Setter
-public class ExhibitsWith {
+public class ExhibitsWithYearly {
 
     @RelationshipId
     private Long id;
     private Integer startYear;
-    private Integer endYear;
     private Integer numExhibitions;
     private String[] cities;
     private String[] countries;
@@ -20,10 +19,9 @@ public class ExhibitsWith {
     @TargetNode
     private final Artist artist;
 
-    public ExhibitsWith(Artist artist, Integer startYear, Integer endYear, String[] cities, String[] countries, Integer numExhibitions ) {
+    public ExhibitsWithYearly(Artist artist, Integer startYear, String[] cities, String[] countries, Integer numExhibitions ) {
         this.artist = artist;
         this.startYear = startYear;
-        this.endYear = endYear;
         this.cities = cities;
         this.countries = countries;
         this.numExhibitions = numExhibitions;
@@ -31,7 +29,7 @@ public class ExhibitsWith {
 
     @Override
     public String toString() {
-        return "ExhibitsWith{" +
+        return "ExhibitsWithYearly{" +
                 "id=" + id +
                 ", artist=" + artist.getName() +
                 '}';

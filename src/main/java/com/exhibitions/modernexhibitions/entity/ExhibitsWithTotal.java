@@ -15,7 +15,6 @@ public class ExhibitsWithTotal {
     @RelationshipId
     private Long id;
     private Integer[] startYears;
-    private Integer[] endYears;
     private Integer numExhibitions;
     private String[] cities;
     private String[] countries;
@@ -24,12 +23,9 @@ public class ExhibitsWithTotal {
     @Getter
     private final Artist artist;
 
-    public ExhibitsWithTotal(Artist artist,List<Integer> startYears, List<Integer> endYears, String[] cities, String[] countries, Integer numExhibitions ) {
+    public ExhibitsWithTotal(Artist artist,List<Integer> startYears, String[] cities, String[] countries, Integer numExhibitions ) {
         this.artist = artist;
         this.startYears = Arrays.stream(startYears.toArray())
-                .map(o -> (Integer) o)
-                .toArray(Integer[]::new);
-        this.endYears = Arrays.stream(endYears.toArray())
                 .map(o -> (Integer) o)
                 .toArray(Integer[]::new);
         this.cities = cities;
@@ -39,7 +35,7 @@ public class ExhibitsWithTotal {
 
     @Override
     public String toString() {
-        return "ExhibitsWith{" +
+        return "ExhibitsWithTotal{" +
                 "id=" + id +
                 ", artist=" + artist.getName() +
                 '}';
