@@ -1,11 +1,11 @@
 package com.exhibitions.modernexhibitions.repository.projection;
 
-import com.exhibitions.modernexhibitions.entity.ExhibitsWith;
+import com.exhibitions.modernexhibitions.entity.ExhibitsWithYearly;
 
 import java.util.List;
 
 public interface ArtistProjectionYearlyNetwork {
     Integer getId();
-    List<ExhibitsWith> getCoArtistsIncoming();
-    List<ExhibitsWith> getCoArtistsOutgoing();
+    List<ExhibitsWithYearly> getCoArtistsIncoming();
+    List<ExhibitsWithYearly> getCoArtistsOutgoing();
 }
