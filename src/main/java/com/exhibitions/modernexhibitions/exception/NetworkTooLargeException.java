@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Thrown if Coordinates are invalid
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class InvalidCoordinatesException extends RuntimeException {
+public class NetworkTooLargeException extends RuntimeException {
 
-    public InvalidCoordinatesException(String message){
+    public NetworkTooLargeException(String message){
         super(message);
     }
 }
