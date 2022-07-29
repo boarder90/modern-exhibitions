@@ -14,7 +14,6 @@ public class YearlyLinkDto {
     private Integer source;
     private Integer target;
     private Integer startYear;
-    private Integer endYear;
     private Integer numExhibitions;
     private String[] cities;
     private String[] countries;
