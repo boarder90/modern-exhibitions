@@ -1,9 +1,6 @@
 package com.exhibitions.modernexhibitions.repository.impl;
 
-import com.exhibitions.modernexhibitions.dto.FeatureCollectionDto;
-import com.exhibitions.modernexhibitions.dto.FeatureDto;
-import com.exhibitions.modernexhibitions.dto.LinkDto;
-import com.exhibitions.modernexhibitions.dto.LocationsOfNetworkDto;
+import com.exhibitions.modernexhibitions.dto.*;
 import com.exhibitions.modernexhibitions.entity.Artist;
 import com.exhibitions.modernexhibitions.repository.NonDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +26,8 @@ public class NonDomainRepositoryImpl implements NonDomainRepository {
     public FeatureCollectionDto getExhibitionLocationsAsGeoJSON(List<Integer> artistIds) {
         Collection<FeatureDto> result = this.neo4jClient.query("""
                         CALL apoc.do.when($artistIds IS NOT NULL,
-                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(distinct e) as numExhibitions',
-                          'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(distinct e) as numExhibitions',
+                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and id(a1)<id(a2) and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(e) as numExhibitions',
+                          'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(e) as numExhibitions',
                           {artistIds:$artistIds}
                         )
                         YIELD value
@@ -45,8 +42,8 @@ public class NonDomainRepositoryImpl implements NonDomainRepository {
     public FeatureCollectionDto getExhibitionLocationsYearlyAsGeoJSON(List<Integer> artistIds) {
         Collection<FeatureDto> result = this.neo4jClient.query("""
                         CALL apoc.do.when($artistIds IS NOT NULL,
-                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(distinct e) as numExhibitions',
-                          'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(distinct e) as numExhibitions',
+                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and id(a1) < id(a2) and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(e) as numExhibitions',
+                          'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(e) as numExhibitions',
                           {artistIds: $artistIds}
                         )
                         YIELD value
@@ -74,7 +71,7 @@ public class NonDomainRepositoryImpl implements NonDomainRepository {
 
     @Override
     public LocationsOfNetworkDto getLocationsOfNetwork(List<Integer> artistIds) {
-        Optional<LocationsOfNetworkDto> result = this.neo4jClient.query("MATCH (a1:Artist)-[e:EXHIBITS_WITH]-(a2:Artist)" +
+        Optional<LocationsOfNetworkDto> result = this.neo4jClient.query("MATCH (a1:Artist)-[e:EXHIBITS_WITH_YEARLY]-(a2:Artist)" +
                 " WHERE  a1.id in $artistIds and a2.id in $artistIds and id(a1)<id(a2) " +
                 "WITH REDUCE(s = [], countries IN COLLECT(e.countries)| CASE WHEN countries IN s THEN s ELSE s " +
                 "+ countries END) as countries, REDUCE(s = [], cities IN COLLECT(e.cities) | s + cities) as" +
