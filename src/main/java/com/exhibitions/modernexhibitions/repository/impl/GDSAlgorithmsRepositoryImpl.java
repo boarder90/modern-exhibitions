@@ -20,8 +20,6 @@ public class GDSAlgorithmsRepositoryImpl implements GDSAlgorithmsRepository {
 
     @Override
     public List<CentralityDto> getDegreeCentrality(List<Integer> artistIds) {
-        dropGraph();
-        createCypherGraphProjection(artistIds);
         return this.neo4jClient.query("""
                         CALL gds.degree.stream(
                            'artistNetwork',
@@ -35,8 +33,6 @@ public class GDSAlgorithmsRepositoryImpl implements GDSAlgorithmsRepository {
 
     @Override
     public List<CentralityDto> getDegreeCentralityWeighted(List<Integer> artistIds) {
-        dropGraph();
-        createCypherGraphProjection(artistIds);
         return this.neo4jClient.query("""
                         CALL gds.degree.stream(
                            'artistNetwork',
@@ -48,11 +44,13 @@ public class GDSAlgorithmsRepositoryImpl implements GDSAlgorithmsRepository {
                 mappedBy(((typeSystem, record) -> new CentralityDto(record.get("id").asInt(),record.get("centrality").asDouble()))).all().stream().toList();
     }
 
-    private void dropGraph() {
+    @Override
+    public void dropGraph() {
         this.neo4jClient.query("CALL gds.graph.drop('artistNetwork', false)").run();
     }
 
-    private void createCypherGraphProjection(List<Integer> artistIds) {
+    @Override
+    public void createCypherGraphProjection(List<Integer> artistIds) {
         this.neo4jClient.query("""
                 CALL gds.graph.project.cypher(
                   'artistNetwork',
@@ -62,4 +60,17 @@ public class GDSAlgorithmsRepositoryImpl implements GDSAlgorithmsRepository {
                   graphName AS graph""").bind(artistIds).to("artistIds").run();
 
     }
+
+    @Override
+    public void createCypherGraphProjectionYearly(List<Integer> artistIds, Integer year) {
+        this.neo4jClient.query("""
+                CALL gds.graph.project.cypher(
+                  'artistNetwork',
+                  'MATCH (n:Artist) WHERE n.id in $artistIds RETURN id(n) AS id',
+                  'MATCH (n:Artist)-[r:EXHIBITS_WITH_YEARLY]-(m:Artist) WHERE n.id in $artistIds and m.id in $artistIds and id(n)<id(m) and r.startYear = $year RETURN id(n) AS source, id(m) AS target,r.numExhibitions AS numberOfExhibitions', {parameters: { artistIds: $artistIds, year: $year} })
+                YIELD
+                  graphName AS graph""").bind(artistIds).to("artistIds").bind(year).to("year").run();
+
+    }
+
 }

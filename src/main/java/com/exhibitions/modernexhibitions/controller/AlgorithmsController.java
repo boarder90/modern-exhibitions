@@ -28,13 +28,13 @@ public class AlgorithmsController {
     }
 
     @GetMapping("/degree")
-    public List<CentralityDto> getDegreeCentrality(@RequestParam List<Integer> artistIds) {
-        return gdsAlgorithmsService.getDegreeCentrality(artistIds);
+    public List<CentralityDto> getDegreeCentrality(@RequestParam List<Integer> artistIds, @RequestParam(required=false) Integer year) {
+        return gdsAlgorithmsService.getDegreeCentrality(artistIds, year);
     }
 
     @GetMapping("degree/weighted")
-    public List<CentralityDto> getLocationsOfNetwork(@RequestParam List<Integer> artistIds) {
-        return gdsAlgorithmsService.getDegreeCentralityWeighted(artistIds);
+    public List<CentralityDto> getWeightedDegreeCentrality(@RequestParam List<Integer> artistIds, @RequestParam(required=false) Integer year) {
+        return gdsAlgorithmsService.getDegreeCentralityWeighted(artistIds , year);
     }
 
 }

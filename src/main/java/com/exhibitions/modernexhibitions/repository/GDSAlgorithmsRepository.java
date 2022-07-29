@@ -8,10 +8,6 @@ public interface GDSAlgorithmsRepository {
 
     List<CentralityDto> getDegreeCentralityWeighted(List<Integer> artistIds);
 
-    List<CentralityDto> getDegreeCentralityYearly(List<Integer> artistIds,Integer year);
-
-    List<CentralityDto> getDegreeCentralityWeightedYearly(List<Integer> artistIds, Integer year);
-
     void dropGraph();
 
     void createCypherGraphProjectionYearly(List<Integer> artistIds, Integer year);
