@@ -1,0 +1,9 @@
+.active {
+  color: white !important;
+  font-weight: bold;
+}
+
+li:hover :not(.active) {
+  text-shadow: 1px 0 0 currentColor;
+}
+
