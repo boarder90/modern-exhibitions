@@ -76,7 +76,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIds(List<Integer>ids, Integer numExhibitions, Integer year) throws NetworkTooLargeException{
-        if(ids.size()>30){
+        if(ids!= null && ids.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         return artistRepository.getNetworkByIds(ids,numExhibitions,year);
@@ -96,7 +96,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistProjectionTotalNetwork> getTotalNetworkByIds(List<Integer> ids, Integer numExhibitions) throws NetworkTooLargeException {
-        if(ids.size()>30){
+        if(ids!= null && ids.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         return artistRepository.getTotalNetworkByIds(ids,numExhibitions);
@@ -104,7 +104,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCountry(List<Integer> ids, String country) throws NetworkTooLargeException{
-        if(ids.size()>30){
+        if(ids!= null && ids.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCountry(ids, country);
@@ -121,7 +121,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCity(List<Integer> ids, String city) throws NetworkTooLargeException{
-        if(ids.size()>30){
+        if(ids!= null && ids.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCity(ids, city);
@@ -139,7 +139,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIdsFilteredByCountry(List<Integer> ids, String country, Integer year) throws NetworkTooLargeException {
-        if(ids.size()>30){
+        if(ids!= null && ids.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionYearlyNetwork> artists  = artistRepository.getYearlyNetworkByIdsFilteredByCountry(ids, country, year);
@@ -158,7 +158,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIdsFilteredByCity(List<Integer> ids, String city, Integer year) throws NetworkTooLargeException{
-        if(ids.size()>30){
+        if(ids!= null && ids.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionYearlyNetwork> artists  = artistRepository.getYearlyNetworkByIdsFilteredByCity(ids, city, year);

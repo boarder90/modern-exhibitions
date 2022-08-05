@@ -23,7 +23,7 @@ public class GDSAlgorithmsServiceImpl implements GDSAlgorithmsService {
 
     @Override
     public List<CentralityDto> getDegreeCentrality(List<Integer> artistIds, Integer year) throws NetworkTooLargeException{
-        if(artistIds.size()>30){
+        if(artistIds!= null && artistIds.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         synchronized (this){
@@ -41,7 +41,7 @@ public class GDSAlgorithmsServiceImpl implements GDSAlgorithmsService {
 
     @Override
     public List<CentralityDto> getDegreeCentralityWeighted(List<Integer> artistIds, Integer year) throws NetworkTooLargeException{
-        if(artistIds.size()>30){
+        if(artistIds!= null && artistIds.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         synchronized (this) {

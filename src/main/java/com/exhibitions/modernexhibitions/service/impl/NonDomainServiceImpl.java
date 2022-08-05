@@ -48,7 +48,7 @@ public class NonDomainServiceImpl implements NonDomainService {
 
     @Override
     public LocationsOfNetworkDto getLocationsOfNetwork(List<Integer> artistIds)  throws NetworkTooLargeException {
-        if(artistIds.size()>30){
+        if(artistIds!= null && artistIds.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         return nonDomainRepository.getLocationsOfNetwork(artistIds);

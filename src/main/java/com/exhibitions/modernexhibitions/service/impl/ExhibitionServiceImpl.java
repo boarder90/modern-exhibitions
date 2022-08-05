@@ -27,7 +27,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     }
 
     public List<Exhibition> findExhibitionsFiltered (List<Double> coordinates, List<Integer> artistIds, Integer year) throws InvalidCoordinatesException, NetworkTooLargeException {
-        if(artistIds.size()>30){
+        if(artistIds!= null && artistIds.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         if(coordinates == null){
