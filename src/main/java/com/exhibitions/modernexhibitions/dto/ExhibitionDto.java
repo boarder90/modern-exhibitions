@@ -1,12 +1,14 @@
 package com.exhibitions.modernexhibitions.dto;
 
-import com.exhibitions.modernexhibitions.entity.Location;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * ExhibitionDto
+ */
 @ToString
 @Setter
 @Getter

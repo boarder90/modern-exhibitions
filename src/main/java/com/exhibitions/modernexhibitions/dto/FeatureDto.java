@@ -2,11 +2,13 @@ package com.exhibitions.modernexhibitions.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * FeatureDto according to the GeoJSON standard
+ */
 @Getter
 @Setter
 public class FeatureDto {

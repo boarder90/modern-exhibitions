@@ -2,6 +2,9 @@ package com.exhibitions.modernexhibitions.dto;
 
 import lombok.*;
 
+/**
+ * LinkDto
+ */
 @Getter
 @Setter
 @ToString

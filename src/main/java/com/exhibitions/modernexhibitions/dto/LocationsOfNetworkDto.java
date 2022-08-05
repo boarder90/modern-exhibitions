@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Custom LocationsOfNetworkDto consisting of all the cities and countries of a network
+ */
 @ToString
 @Getter
 @Setter

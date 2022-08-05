@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
+/**
+ * ArtistDto
+ */
 @ToString
 @Getter
 @Setter

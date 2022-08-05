@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * Custom ArtistNetworkDTO consisting of ArtistDtos as nodes and LinkDtos as links
+ */
 @ToString
 @Getter
 @Setter

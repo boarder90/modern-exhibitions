@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * FeatureCollectionDto according to the GeoJSON standard
+ */
 @ToString
 @Setter
 @Getter
