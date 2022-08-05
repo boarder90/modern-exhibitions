@@ -9,19 +9,35 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Maps the artists entities to respective link DTOs.
+ */
 @Component
 public class CustomNetworkMapper {
 
-    public List<YearlyLinkDto> artistsToYearlyLinkDtoList(List<ArtistProjectionYearlyNetwork> artist){
+    /**
+     * Used for yearly networks.
+     *
+     * @param artists the respective artist entities
+     * @return links
+     */
+    public List<YearlyLinkDto> artistsToYearlyLinkDtoList(List<ArtistProjectionYearlyNetwork> artists){
         List<YearlyLinkDto> links = new ArrayList<>();
-        artist.stream().forEach(a -> a.getCoArtistsIncoming().stream().forEach(e -> links.add(new YearlyLinkDto(a.getId(),e.getArtist().getId(),e.getStartYear(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
-        artist.stream().forEach(a -> a.getCoArtistsOutgoing().stream().forEach(e -> links.add(new YearlyLinkDto(a.getId(),e.getArtist().getId(),e.getStartYear(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
+        artists.stream().forEach(a -> a.getCoArtistsIncoming().stream().forEach(e -> links.add(new YearlyLinkDto(a.getId(),e.getArtist().getId(),e.getStartYear(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
+        artists.stream().forEach(a -> a.getCoArtistsOutgoing().stream().forEach(e -> links.add(new YearlyLinkDto(a.getId(),e.getArtist().getId(),e.getStartYear(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
         return links;
     }
-    public List<LinkDto> artistsToLinkDtoList(List<ArtistProjectionTotalNetwork> artist){
+
+    /**
+     * Used for total networks.
+     *
+     * @param artists the respective artist entities
+     * @return links
+     */
+    public List<LinkDto> artistsToLinkDtoList(List<ArtistProjectionTotalNetwork> artists){
         List<LinkDto> links = new ArrayList<>();
-        artist.stream().forEach(a -> a.getCoArtistsTotalIncoming().stream().forEach(e -> links.add(new LinkDto(a.getId(),e.getArtist().getId(),e.getStartYears(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
-        artist.stream().forEach(a -> a.getCoArtistsTotalOutgoing().stream().forEach(e -> links.add(new LinkDto(a.getId(),e.getArtist().getId(),e.getStartYears(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
+        artists.stream().forEach(a -> a.getCoArtistsTotalIncoming().stream().forEach(e -> links.add(new LinkDto(a.getId(),e.getArtist().getId(),e.getStartYears(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
+        artists.stream().forEach(a -> a.getCoArtistsTotalOutgoing().stream().forEach(e -> links.add(new LinkDto(a.getId(),e.getArtist().getId(),e.getStartYears(),e.getNumExhibitions(),e.getCities(), e.getCountries()))));
         return links;
     }
 }
