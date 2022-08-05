@@ -2,4 +2,146 @@
 
 // MDB SCSS
 @import "~mdb-angular-ui-kit/assets/scss/mdb.scss";
+// Notifier
+@import "~angular-notifier/styles.css";
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+:root {
+  //countries
+  --DE: blue;
+  --FR: red;
+  --AT: orange;
+  --GB: green;
+  --HU: purple;
+  --CZ: black;
+  --NL:  #B51;
+  --US: navy;
+  --BE: teal;
+  --IT: fuchsia;
+  --CH: maroon;
+  --SE: deeppink;
+  --RU: mediumpurple;
+  --UA: mediumturquoise;
+  --NO: mediumvioletred;
+  --LV: olive;
+  --ES: peru;
+  --PL: salmon;
+  --DL: sienna;
+  //cities
+  --default: black;
+  --Angers: #0FFFF0;
+  --Antwerp: #DE0101;
+  ---: black;
+  --Basel: #DE0105;
+  --Bern: #DE0;
+  --Bielefeld: #DE0206;
+  --Boston: #50C;
+  --BrandenburganderHavel: #50C022;
+  --Breslau: #50C999;
+  --Brno: #8A2BE0;
+  --Brunate: #8A2BE9;
+  --Chrudim: #8A2BA2;
+  --Cincinnati: #8A0B02;
+  --Copenhagen: #8A2B10;
+  --Darmstadt: #81E2;
+  --Ekaterinodar: #81E;
+  --Elberfeld: #FF66;
+  --Essen: #FF2230;
+  --Weggis: #FF0261;
+  --Geneva: #8A2B;
+  --Ghent: #FF6699;
+  --Groningen: #FF6603;
+  --Hanover: #FF66;
+  --Helsingfors: #F33;
+  --HradecKrálové: #F266;
+  --Kaluga: #FF62;
+  --Karlsruhe: #00B2;
+  --Kazan: #00FF;
+  --Kladno: #00AA;
+  --Kroměříž: #00BB;
+  --Kursk: #00CC;
+  --Liège: #00DD;
+  --Liverpool: #038011;
+  --Luzern: #0303;
+  --Malmö: #0304;
+  --Montecatini: #0306;
+  --Nantes: #0309;
+  --Naples: #031;
+  --NewarkNewJersey: #00EE;
+  --Nijmegen: #011E;
+  --Nikolaev: #7504;
+  --Ostend: #75FE;
+  --Prostějov: #750;
+  --SanFrancisco: #750;
+  --Schwerin: #701;
+  --Strasbourg: #754;
+  --Tokyo: #200000;
+  --Trondheim: #300000;
+  --ValasskeMeziříčí: #400000;
+  --Vilnius: #500000;
+  --Wiesbaden: #600000;
+  --Barcelona: #700000;
+  --Barmen: #800010;
+  --BuenosAires: #3F0032;
+  --Chicago: #3F00F0;
+  --Ekaterinoslav: #3F00FE;
+  --Marseilles: #3F0000;
+  --Olomouc: #3FEF;
+
+  --Riga: #3F00F4;
+  --Stuttgart: #B51;
+  --Utrecht: #FF13;
+  --Arnhem: #B502;
+  --Gothenburg: #B50;
+  --HagueThe: #B5E0;
+  --Odessa: #B5D;
+  --Rouen: #F924;
+  --Brighton: #FFFFF;
+  --Domburg: #F90;
+  --Florence: #F92;
+  --Hodonín: #F99;
+  --Mannheim: #F10;
+  --ChristianiaOslo: #F1F9;
+  --Hagen: #FFF900;
+  --Kiev: #F93699;
+  --Leipzig: #FF6690;
+  --FrankfurtamMain: #DC143C;
+  --Weimar: #FF6600;
+  --Bremen: #FF4500;
+  --Stockholm: #3F00FF;
+  --Toulouse: #40E0D0;
+  --Venice: #40826D;
+  --Zurich: #FFF700;
+  --Dresden: #B57EDC;
+  --Hamburg: #4B0082;
+  --Pittsburgh: #008001;
+  --Rotterdam: #50C878;
+  --Dusseldorf: #702963;
+  --Milan: #800020;
+  --Cologne: #CD7F32;
+  --Rome: #DE5D83;
+  --Brussels: #8A2BE2;
+  --Amsterdam: #0095B6;
+  --SaintPetersburg: #7FFF00;
+  --NewYork: #50C878;
+  --Prague: #CB4154;
+  --Moscow: #89CFF0;
+  --Munich: #007FFF;
+  --Budapest: #7FFFD4;
+  --London: #000000;
+  --Vienna: #9966CC;
+  --Berlin: #FFBF00;
+  --Paris: #E52B50;
+}
+
+.accordion-button {
+    background: #f8f9fa !important;
+  }
+
 
