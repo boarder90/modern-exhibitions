@@ -1,0 +1,33 @@
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Selected Network: {{name}}</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modalRef.close()"
+    ></button>
+  </div>
+  <div class="modal-body text-center" style="max-height: 500px; overflow-y: auto">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>More</th>
+          <th>Name</th>
+          <th>Remove</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let artist of artists">
+          <td><a target="_blank" rel="noopener noreferrer" href="https://exhibitions.univie.ac.at/person/{{artist.id}}" class="btn btn-primary btn-sm">More</a>
+          </td>
+          <td>{{artist.name}}</td>
+          <td><button class="btn btn-sm btn-danger" (click)="remove(artist)">X</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modalRef.close()">Close
+    </button>
+  </div>
