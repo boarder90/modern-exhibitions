@@ -1,7 +1,7 @@
 <div class="container-fluid mt-5">
   <div class="row">
     <div class="map col-md-10">
-         <div leaflet *ngIf="loaded" style="height: 60vh;"
+         <div leaflet style="height: 60vh;"
          [leafletOptions]="options"
          [leafletLayers]="layers"
          [leafletMarkerCluster]="data"
@@ -17,12 +17,12 @@
         <button [disabled]="basicCollapse.collapsed"
                 class="btn btn-primary btn-sm"
                 type="button"
-                (click)="basicCollapse.toggle(); onClick($event)"
+                (click)="basicCollapse.toggle(); onClick()"
                 [attr.aria-expanded]="!basicCollapse.collapsed"
                 aria-controls="collapseExample">Total View</button>
 
         <div class="mt-3" id="collapseExample" [collapsed]="toggleBoolean" mdbCollapse #basicCollapse="mdbCollapse" >
-          <div *ngIf="loaded" style="width: 50%; margin: auto; font-size: 10px">
+          <div *ngIf="loaded" style="width: 50%; margin: auto;">
             <ngx-slider [(value)]="value" (valueChange)="onChange($event)" [options]="sliderOptions"></ngx-slider>
           </div>
         </div>
@@ -37,38 +37,9 @@
         <p class="fs-10 fw-lighter font-italic">No exhibitions selected</p>
       </div>
       <div class="overflow-y-scroll text-center">
-        <ul *ngFor="let exhibition of exhibitions!; index as i" class="list-group-large list-unstyled">
-          <li class="list-group-item ms-0 me-auto border-right-0 border-left-0">
-            <p class="fs-6 fw-bold"><small> {{exhibition.title}}</small></p>
-            <p *ngIf="exhibition.endYear==0"> <smalL>Exh. Period: <b>{{exhibition.startYear}}</b></smalL></p>
-            <p *ngIf="exhibition.endYear!=0"> <small>Exh. Period: <b>{{exhibition.startYear}} - {{exhibition.endYear}}</b></small></p>
-            <p class="mb-0"><small>Catalogue entries: <b>{{exhibition.numCatalogueEntries}}</b></small></p>
-            <p><small>Artists: <b>{{exhibition.numArtists}}</b></small></p>
-            <a target="_blank" rel="noopener noreferrer" href="https://exhibitions.univie.ac.at/exhibition/{{exhibition.id}}" class="badge badge-primary rounded-pill">More</a>
-          </li>
-        </ul>
+        <app-exhibitions-list [exhibitions]="this.exhibitions"></app-exhibitions-list>
       </div>
   </div>
   </div>
-  <!--<div style="text-align: center; margin-top: 20px">
-    <button [disabled]="!basicCollapse.collapsed"
-      class="btn btn-primary"
-            (click)="basicCollapse.toggle(); this.show=!this.show;onChange(value)"
-      role="button"
-      [attr.aria-expanded]="basicCollapse.collapsed"
-      aria-controls="collapseExample">Yearly View</button>
-    <button [disabled]="basicCollapse.collapsed"
-      class="btn btn-primary"
-      type="button"
-      (click)="basicCollapse.toggle(); onClick($event)"
-      [attr.aria-expanded]="!basicCollapse.collapsed"
-      aria-controls="collapseExample">Total View</button>
-
-    <div class="mt-3" id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse" >
-      <div *ngIf="loaded" style="width: 50%; margin: auto;">
-        <ngx-slider [(value)]="value" (valueChange)="onChange($event)" [options]="sliderOptions"></ngx-slider>
-      </div>
-    </div>
-  </div>-->
 </div>
 

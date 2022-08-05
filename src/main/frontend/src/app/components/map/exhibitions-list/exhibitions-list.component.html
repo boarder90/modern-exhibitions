@@ -1,0 +1,10 @@
+<ul *ngFor="let exhibition of exhibitions!; index as i" class="list-group-large list-unstyled">
+  <li class="list-group-item ms-0 me-auto border-right-0 border-left-0">
+    <p class="fs-6 fw-bold"><small> {{exhibition.title}}</small></p>
+    <p *ngIf="exhibition.endYear==0"> <smalL>Exh. Period: <b>{{exhibition.startYear}}</b></smalL></p>
+    <p *ngIf="exhibition.endYear!=0"> <small>Exh. Period: <b>{{exhibition.startYear}} - {{exhibition.endYear}}</b></small></p>
+    <p class="mb-0"><small>Catalogue entries: <b>{{exhibition.numCatalogueEntries}}</b></small></p>
+    <p><small>Artists: <b>{{exhibition.numArtists}}</b></small></p>
+    <a target="_blank" rel="noopener noreferrer" href="https://exhibitions.univie.ac.at/exhibition/{{exhibition.id}}" class="badge badge-primary rounded-pill">More</a>
+  </li>
+</ul>

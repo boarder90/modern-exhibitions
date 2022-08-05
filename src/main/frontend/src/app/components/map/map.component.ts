@@ -1,13 +1,12 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {GeoJSON, latLng, tileLayer} from 'leaflet';
-import {ExhibitionService} from "../../services/exhibition.service";
+import {ExhibitionService} from "../../services/HttpServices/exhibition.service";
 import {LocationDto} from "../../dtos/LocationDto";
 import {Options} from "@angular-slider/ngx-slider";
 import 'leaflet.markercluster';
 import {Feature} from "geojson";
 import {ExhibitionDto} from "../../dtos/ExhibitionDto";
-import {Observable, ReplaySubject} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
 
@@ -17,9 +16,6 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-
- // @ViewChild(basic) collapse!: ElementRef;
- // @ViewChild(MdbCollapseDirective) new: any;
 
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     detectRetina: true,
@@ -34,7 +30,6 @@ export class MapComponent implements OnInit {
   exhibitionsLoaded: boolean = false;
   exhibitions: ExhibitionDto[] = [];
   locations: LocationDto[] = [];
-  exhibitions$: Observable<ExhibitionDto[]> = new ReplaySubject<ExhibitionDto[]>(1);
   layers: GeoJSON[] = [];
   totalExhibitions: GeoJSON[] = [];
   features: GeoJSON.Feature[] = [];
@@ -99,11 +94,7 @@ export class MapComponent implements OnInit {
     }
   }
 
-  toggle(){
-    this.toggleBoolean = !this.toggleBoolean;
-  }
-
-  onClick(e: any) {
+  onClick() {
     this.show=false;
    this.data = this.totalExhibitions;
   }
@@ -115,15 +106,6 @@ export class MapComponent implements OnInit {
         this.year = year;
       this.cdr.detectChanges();
       });
-  }
-
-  test(){
-    this.exhibitions$.subscribe(
-      e => {
-        this.exhibitions = e;
-        console.log(e);
-      }
-    )
   }
 
   private loadExhibitions(artistIds: number[]|null) {
@@ -220,7 +202,6 @@ export class MapComponent implements OnInit {
               }
               }
           )
-       // this.show=!this.show;this.onChange(1910);this.toggleBoolean=false;
       }
     );
 }
