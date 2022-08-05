@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Thrown if Coordinates are invalid
+ * Thrown if coordinates are invalid
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class InvalidCoordinatesException extends RuntimeException {
