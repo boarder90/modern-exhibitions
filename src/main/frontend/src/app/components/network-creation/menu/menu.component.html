@@ -1,0 +1,40 @@
+  <div class="m-5 text-center border" *ngIf="!nameSelected">
+    <mdb-accordion [flush]="true" style="background-color:#f8f9fa !important;">
+      <mdb-accordion-item style="background-color:#f8f9fa !important;">
+        <ng-template mdbAccordionItemHeader>Create a new network</ng-template>
+        <ng-template mdbAccordionItemBody>
+          <p>Please select a network name first.</p>
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Network</span>
+            <input type="text" class="form-control" placeholder="Name" aria-label="Username"
+                   aria-describedby="addon-wrapping" [formControl]="nameControl"/>
+          </div>
+          <button type="button" class="btn btn-primary m-5" (click)="setName()">Continue</button>
+        </ng-template>
+      </mdb-accordion-item>
+      <mdb-accordion-item style="background-color:#f8f9fa !important;">
+        <ng-template mdbAccordionItemHeader>Edit Existing Network</ng-template>
+        <ng-template mdbAccordionItemBody>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>View</th>
+              <th>Edit</th>
+              <th>Remove</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let network of networks | keyvalue ">
+              <td>{{network.key}}</td>
+              <td><button class="btn btn-sm btn-success" (click)="view(network.key)">View</button></td>
+              <td><button class="btn btn-sm btn-primary" (click)="edit(network.key)">Edit</button></td>
+              <td><button class="btn btn-sm btn-danger" (click)="remove(network.key)">X</button></td>
+            </tr>
+            </tbody>
+          </table>
+        </ng-template>
+      </mdb-accordion-item>
+    </mdb-accordion>
+  </div>

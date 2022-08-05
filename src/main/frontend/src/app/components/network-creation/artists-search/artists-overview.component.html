@@ -1,0 +1,7 @@
+<div class="input-group-prepend">
+  <input type="text" class="form-control" placeholder="Type in name..." aria-describedby="searchMovieTitle" [formControl]="artistName">
+</div>
+<div class="dropdown-menu" style="size: 8px">
+  <span *ngIf="artistsLoading">Loading</span>
+  <a class="dropdown-item" *ngFor="let artist of artists" (click)="pushToDetailNetwork(artist)">{{artist.name}}</a>
+</div>

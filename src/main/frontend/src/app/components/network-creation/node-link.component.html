@@ -1,0 +1,113 @@
+<div class="container-fluid" style="max-height: 100vh;">
+  <app-menu *ngIf="!nameSelected" (nameSelectedEmit)="nameSelected = $event" (nameOutputEmit)="this.name = $event" (selectionEmit)="this.selection = $event" (selectedArtistsEmit)="selectionArtists = $event"></app-menu>
+  <div class="row" *ngIf="nameSelected">
+      <div class="col-2 border">
+        <mdb-accordion [flush]="true" style="background-color:#f8f9fa !important;">
+          <mdb-accordion-item style="background-color:#f8f9fa !important;">
+            <ng-template mdbAccordionItemHeader>Search for Artist</ng-template>
+            <ng-template mdbAccordionItemBody>
+              <app-artists-overview (artistData)="getEgo($event)"></app-artists-overview>
+            </ng-template>
+          </mdb-accordion-item>
+          <mdb-accordion-item style="background-color:#f8f9fa !important;">
+            <ng-template mdbAccordionItemHeader>Color Nodes</ng-template>
+            <ng-template mdbAccordionItemBody>
+              <div class="form-check">
+                <input
+                  mdbRadio
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault1"
+                  [checked]="true"
+                  (change)="egoComponent.colorDefault()"
+                />
+                <label class="form-check-label" for="flexRadioDefault1">Default</label>
+              </div>
+              <div class="form-check">
+                <input
+                  mdbRadio
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault2"
+                  (change)="egoComponent.colorByNationality()"
+                />
+                <label class="form-check-label" for="flexRadioDefault2"> By Nationality </label>
+              </div>
+              <div class="form-check">
+                <input
+                  mdbRadio
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault3"
+                  (change)="egoComponent.colorBySex()"
+                />
+                <label class="form-check-label" for="flexRadioDefault3"> By Gender </label>
+              </div>
+            </ng-template>
+          </mdb-accordion-item>
+          <mdb-accordion-item style="background-color:#f8f9fa !important;">
+            <ng-template mdbAccordionItemHeader>Ego</ng-template>
+            <ng-template mdbAccordionItemBody>
+              <div class="card text-center">
+                <div *ngIf="egoDto" class="card-body">
+                  <h5 class="card-title">{{ egoDto.name}}</h5>
+                  <br>
+                  <p class="card-text"><b>
+                    {{egoDto.occupation}}
+                  </b>
+                  </p>
+                  <br>
+                  <p>From: {{egoDto.nationality | countryPipe}}</p>
+                  <p>Sex: {{egoDto.sex}}</p>
+                  <div class="d-flex justify-content-around">
+                    <a  target="_blank" rel="noopener noreferrer" href="https://exhibitions.univie.ac.at/person/{{egoDto.id}}" class="btn btn-primary btn-sm">More</a>
+                    <button class="btn btn-success btn-sm" (click)="addToArr(egoDto)">Add</button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </mdb-accordion-item>
+        </mdb-accordion>
+        <button type="button" class="btn btn-primary" (click)="openModal()">
+          Selected Network<span class="badge bg-success ms-2">{{selectionArtists.length}}</span>
+        </button>
+      </div>
+    <div class="col-8 text-center overflow-hidden">
+      <div class="spinner-border" style="margin: 0 auto;" role="status" *ngIf="!rendered && loading">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="border" style="height: 80vh;width: 80vw; overflow:hidden">
+        <!--<svg></svg>-->
+        <app-network-detail #egoComponent (loaded)="networkRendered($event)" (egoEmit)="clickedArtist($event)"></app-network-detail>
+      </div>
+    </div>
+    <div class="col-2 border d-flex flex-wrap justify-content-center">
+      <div class="bg-light text-center mt-2">
+        <p class="fw-bolder">Selected Artist</p>
+      </div>
+      <div *ngIf="this.artistDto" class="card text-center align-self-baseline">
+        <div class="card-body">
+          <h5 class="card-title">{{artistDto.name}}</h5>
+          <br>
+          <p class="card-text"><b>
+            {{artistDto.occupation}}
+          </b>
+          </p>
+          <br>
+          <div>From: <span [ngStyle]="{'color': 'var(--' +artistDto.nationality + ')', 'font-weight': 'bolder'}"> {{artistDto.nationality | countryPipe}}</span></div>
+          <div>Sex: <span [ngStyle]="{'color': (artistDto.sex=='M') ? 'blue' : (artistDto.sex=='F') ? 'red' : 'black', 'font-weight': 'bolder'}">{{artistDto.sex}}</span></div>
+          <div class="d-flex justify-content-around">
+          <a target="_blank" rel="noopener noreferrer" href="https://exhibitions.univie.ac.at/person/{{artistDto.id}}" class="btn btn-primary btn-sm">More</a>
+          <button class="btn btn-success btn-sm" (click)="addToArr(artistDto)">Add</button>
+          </div>
+          <div class="mt-2">
+            <button class="btn btn-dark btn-sm" (click)="egoComponent.setEgo();getEgo(artistDto)">Ego Network</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
