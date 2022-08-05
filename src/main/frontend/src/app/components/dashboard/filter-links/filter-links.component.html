@@ -1,0 +1,47 @@
+<div class="form-check mb-3">
+  <input
+    mdbRadio
+    class="form-check-input"
+    type="radio"
+    name="flexRadioDefault"
+    id="flexRadioDefaultx"
+    [checked]="this.reset"
+    (change)="network.getTotal(current, 'default'); network.getYearly(current, 'default');this.currentColor.emit('default')"
+  />
+  <label class="form-check-label" for="flexRadioDefaultx">No Filter</label>
+</div>
+<mdb-accordion [flush]="true" style="background-color:#f8f9fa !important;">
+  <mdb-accordion-item style="background-color:#f8f9fa !important;">
+    <ng-template mdbAccordionItemHeader>By Country</ng-template>
+    <ng-template mdbAccordionItemBody>
+      <div *ngFor="let country of countries; let i = index" class="form-check">
+        <input
+          mdbRadio
+          class="form-check-input"
+          type="radio"
+          name="flexRadioDefault"
+          id="flexRadioDefault-{{i}}"
+          (change)="this.reset = false; network.getTotalFilteredByCountry(current, country, country); network.getYearlyFilteredByCountry(current, country, country); this.currentColor.emit(country);"
+        />
+        <label class="form-check-label" for="flexRadioDefault-{{i}}">{{country | countryPipe}}</label>
+      </div>
+    </ng-template>
+  </mdb-accordion-item>
+  <mdb-accordion-item style="background-color:#f8f9fa !important;">
+    <ng-template mdbAccordionItemHeader>By City</ng-template>
+    <ng-template mdbAccordionItemBody>
+      <div *ngFor="let city of cities; let i = index" class="form-check">
+        <input
+          mdbRadio
+          class="form-check-input"
+          type="radio"
+          name="flexRadioDefault"
+          id="flexRadioDefault+{{i}}"
+          (change)="this.reset = false; network.getTotalFilteredByCity(current, city, city); network.getYearlyFilteredByCity(current, city, city); this.currentColor.emit(city);
+                      "
+        />
+        <label class="form-check-label" for="flexRadioDefault+{{i}}">{{city}}</label>
+      </div>
+    </ng-template>
+  </mdb-accordion-item>
+</mdb-accordion>

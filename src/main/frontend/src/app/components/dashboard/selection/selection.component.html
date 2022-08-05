@@ -1,0 +1,28 @@
+<ul class="list-group-large list-unstyled" *ngIf="this.yearly && countriesMap.size>0">
+  <li>{{year}}</li>
+</ul>
+<ul *ngFor="let country of countriesMap | keyvalue " class="list-group-large list-unstyled">
+  <li style="display: inline" class="list-group border-0">
+    {{country.key | countryPipe}}: <span [ngStyle]="{'background': 'var(--' +country.key + ')','width': '15px',
+'height': '15px'}" class="circle-with-text">{{country.value}}</span>
+  </li>
+</ul>
+<ul *ngFor="let city of citiesMap | keyvalue " class="list-group-large list-unstyled">
+  <li *ngIf="this.yearly">{{year}}</li>
+  <li style="display: inline" class="list-group border-0">
+    {{city.key}}: <span [ngStyle]="{'background': 'var(--' + (city.key | cityPipe) + ')','width': '15px',
+'height': '15px'}" class="circle-with-text">{{city.value}}</span>
+  </li>
+</ul>
+<ul class="list-group-large list-unstyled">
+  <li *ngIf="artist != null" style="display: inline" class="list-group list-border-0">
+    <b>{{artist.name}}</b>
+  </li>
+  <li *ngIf="artist != null"  [ngStyle]="{'color': (artist.sex=='M') ? 'blue' : (artist.sex=='F') ? 'red' : 'black'}" class="list-group list-border-0">
+    {{artist.sex | sexPipe}}
+  </li>
+  <li *ngIf="artist != null" style="display: inline" class="list-group border-0">
+    {{artist.nationality | countryPipe}} <span [ngStyle]="{'background': 'var(--' +artist.nationality + ')','width': '15px',
+'height': '15px'}" class="circle-with-text"></span>
+  </li>
+</ul>

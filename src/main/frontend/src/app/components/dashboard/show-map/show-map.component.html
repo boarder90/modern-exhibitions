@@ -1,0 +1,2 @@
+<button class="btn btn-sm mb-2" style="background-color: gray; color: white" [disabled]="current.length==0" (click)="navigate(current)">Entire Network</button>
+<button [disabled]="current.length==0" class="btn btn-sm" style="background-color: gray; color: white"  (click)="navigate(selectedArtistsIds)">{{this.selectedArtists}}</button>
