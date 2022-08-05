@@ -42,6 +42,7 @@ import { CentralityComponent } from './components/dashboard/centrality/centralit
 import { FilterLinksComponent } from './components/dashboard/filter-links/filter-links.component';
 import { SelectionComponent } from './components/dashboard/selection/selection.component';
 import { ShowMapComponent } from './components/dashboard/show-map/show-map.component';
+import { ToggleGranularityComponent } from './components/dashboard/toggle-granularity/toggle-granularity.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ShowMapComponent } from './components/dashboard/show-map/show-map.compo
     CentralityComponent,
     FilterLinksComponent,
     SelectionComponent,
-    ShowMapComponent
+    ShowMapComponent,
+    ToggleGranularityComponent
   ],
     imports: [
         BrowserModule,

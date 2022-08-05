@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {ArtistService} from "./HttpServices/artist.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,19 +9,7 @@ export class DashboardService {
   citiesMap: Map<string, number> = new Map;
   selectedArtists: string = "Nothing selected";
 
-  constructor(private artistService: ArtistService) { }
-
-  getArtistsForNetwork(ids: number[]): string{
-    this.artistService.getArtistsByIds(ids).subscribe(
-      data => {
-        if(data.length>1){
-          this.selectedArtists = data[0].name.split(" ")[data[0].name.split(" ").length-1]
-            + " & " + data[1].name.split(" ")[data[1].name.split(" ").length-1];
-        }
-      }
-    );
-    return this.selectedArtists;
-  }
+  constructor() { }
 
 setCountriesArray(countries: any){
     this.countriesMap = new Map;
