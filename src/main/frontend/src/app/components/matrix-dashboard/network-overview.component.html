@@ -1,0 +1,75 @@
+<div class="container-fluid" style="max-height: 100vh; overflow: auto;">
+    <div class="row justify-content-center">
+      <div class="col-2 border rounded overflow-y-scroll" style="max-height: 80vh">
+        <mdb-accordion [flush]="true" style="background-color:#f8f9fa !important;">
+          <mdb-accordion-item style="background-color:#f8f9fa !important;">
+            <ng-template mdbAccordionItemHeader>Network Selection</ng-template>
+            <ng-template mdbAccordionItemBody>
+              <div *ngFor="let networkOfMap of map | keyvalue " class="list-unstyled">
+                <button (click)="this.reset= true; this.centralities = !this.centralities; network.getYearly(networkOfMap.value, 'default'); network.getTotal(networkOfMap.value, 'default'); getLocations(networkOfMap.value); setCurrent(networkOfMap.value)" type="button" style="background-color: #f8f9fa" class="list-group-item list-group-item-action border-0">
+                  {{networkOfMap.key}}
+                </button>
+              </div>
+            </ng-template>
+          </mdb-accordion-item>
+          <mdb-accordion-item style="background-color:#f8f9fa !important;">
+            <ng-template mdbAccordionItemHeader>Color Nodes</ng-template>
+            <ng-template mdbAccordionItemBody>
+             <app-nodes-coloring [inputNetwork]="this.network" [current]="this.current"></app-nodes-coloring>
+            </ng-template>
+          </mdb-accordion-item>
+          <mdb-accordion-item  style="background-color:#f8f9fa !important;">
+            <ng-template mdbAccordionItemHeader>Filter Links</ng-template>
+            <ng-template mdbAccordionItemBody>
+              <app-filter-links (currentColor)="this.currentColor = $event"
+                                [current]="this.current" [inputNetwork]="network"
+                                [countries]="countries" [cities]="cities" [reset]="this.reset"></app-filter-links>
+            </ng-template>
+          </mdb-accordion-item>
+          <mdb-accordion-item style="background-color:#f8f9fa !important;">
+            <ng-template mdbAccordionItemHeader>Centrality</ng-template>
+            <ng-template mdbAccordionItemBody>
+              <app-centrality [inputNetwork]="this.network" [current]="this.current" [yearly]="this.yearly" [reset]="this.centralities"></app-centrality>
+            </ng-template>
+          </mdb-accordion-item>
+          <mdb-accordion-item style="background-color:#f8f9fa !important; " class="text-center" (itemShow)="selected = false" (itemHide)="selected = false">
+            <ng-template mdbAccordionItemHeader>Show on Map <span class="badge badge-success ml-2" *ngIf="selected"> !</span></ng-template>
+            <ng-template mdbAccordionItemBody>
+              <app-show-map [selectedArtists]="selectedArtists" [selectedArtistsIds]="selectedArtistsIds" [current]="current"></app-show-map>
+            </ng-template>
+          </mdb-accordion-item>
+        </mdb-accordion>
+        <hr>
+        <app-toggle-granularity [inputNetwork]="this.network"></app-toggle-granularity>
+      </div>
+      <div class="col-9 d-flex justify-content-center border rounded">
+        <div style="height: 80vh; width: 80vw;">
+          <app-matrix *ngIf="bool" class="flex-grow-1" (artistData)="this.setArtist($event)"
+                      (countries)="this.setCountriesArray($event)" (selection)="artistLinkSelected($event)" (cities)="this.setCitiesArray($event)" (year)="this.setYear($event)"
+                      [yearly]= !basicCollapse.collapsed #matrixComponent></app-matrix>
+        </div>
+      </div>
+      <div class="col-1 border rounded d-flex flex-column justify-content-center" style="overflow: visible;">
+        <app-selection [countriesMap]="countriesMap" [citiesMap]="citiesMap" [yearly]="this.yearly" [year]="this.year" [artist]="this.artist"></app-selection>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <button [disabled]="!basicCollapse.collapsed"
+              class="btn btn-primary btn-sm me-3"
+              (click)="basicCollapse.toggle(); network.switchSVG();this.yearly=true;"
+              role="button"
+              [attr.aria-expanded]="basicCollapse.collapsed"
+              aria-controls="collapseExample">Yearly View</button>
+      <button [disabled]="basicCollapse.collapsed"
+              class="btn btn-primary btn-sm"
+              type="button"
+              (click)="basicCollapse.toggle(); network.switchSVG();this.yearly=false;"
+              [attr.aria-expanded]="!basicCollapse.collapsed"
+              aria-controls="collapseExample">Total View</button>
+      <div class="mt-3" id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse" >
+        <div style="width: 50%; margin: auto;">
+          <ngx-slider [(value)]="value" [options]="options" (valueChange)="network.drawHalfMatrix($event, $event%2 == 0, currentColor); this.centralities = !this.centralities"></ngx-slider>
+        </div>
+      </div>
+    </div>
+</div>
