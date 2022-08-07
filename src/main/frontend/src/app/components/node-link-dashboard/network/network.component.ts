@@ -5,7 +5,6 @@ import {NetworkService} from "../../../services/HttpServices/network.service";
 import {NetworkDto} from "../../../dtos/NetworkDto";
 import {AlgorithmsService} from "../../../services/HttpServices/algorithms.service";
 import {CityPipe} from "../../../util/city-pipe";
-import {DashboardService} from "../../../services/dashboard.service";
 
 @Component({
   selector: 'app-network',
@@ -242,6 +241,9 @@ export class NetworkComponent implements OnInit, OnDestroy {
   }
 
   getYearly(networkIds: number[]) {
+    d3.selectAll("text").style("opacity", 1);
+    d3.selectAll("path").style("opacity",1);
+    d3.selectAll("circle").style("opacity", 1);
     this.networkService.getNetworkYears(networkIds);
     this.networkService.getMap().subscribe(
       data => {
