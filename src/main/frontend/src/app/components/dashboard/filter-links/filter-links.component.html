@@ -6,7 +6,7 @@
     name="flexRadioDefault"
     id="flexRadioDefaultx"
     [checked]="this.reset"
-    (change)="network.getTotal(current, 'default'); network.getYearly(current, 'default');this.currentColor.emit('default')"
+    (change)="network.getTotal(current, 'default'); network.resetLocationFilter(current, year, lower, 'default');this.currentColor.emit('default')"
   />
   <label class="form-check-label" for="flexRadioDefaultx">No Filter</label>
 </div>
@@ -21,7 +21,7 @@
           type="radio"
           name="flexRadioDefault"
           id="flexRadioDefault-{{i}}"
-          (change)="this.reset = false; network.getTotalFilteredByCountry(current, country, country); network.getYearlyFilteredByCountry(current, country, country); this.currentColor.emit(country);"
+          (change)="this.reset = false; network.getTotalFilteredByCountry(current, country, country); network.getYearlyFilteredByCountry(current, country, country, year, lower); this.currentColor.emit(country);"
         />
         <label class="form-check-label" for="flexRadioDefault-{{i}}">{{country | countryPipe}}</label>
       </div>
@@ -37,7 +37,7 @@
           type="radio"
           name="flexRadioDefault"
           id="flexRadioDefault+{{i}}"
-          (change)="this.reset = false; network.getTotalFilteredByCity(current, city, city); network.getYearlyFilteredByCity(current, city, city); this.currentColor.emit(city);
+          (change)="this.reset = false; network.getTotalFilteredByCity(current, city, city); network.getYearlyFilteredByCity(current, city, city, year, lower); this.currentColor.emit(city);
                       "
         />
         <label class="form-check-label" for="flexRadioDefault+{{i}}">{{city}}</label>

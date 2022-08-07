@@ -89,26 +89,27 @@ export class NetworkComponent implements OnInit, OnDestroy {
     )
   }
 
-  getYearlyFilteredByCountry(networkIds: number[], country: string, color: string){
+  getYearlyFilteredByCountry(networkIds: number[], country: string, color: string, year: number, lower: boolean){
+    console.log(this.currentYear + " " + color)
     d3.select("svg#networkYearly").selectAll("*").remove();
     this.networkService.getNetworkYearsFilteredByCountry(networkIds, country);
     this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         console.log(this.map)
-        this.drawYearly(this.currentYear, color)
+        this.drawYearly(year, color)
       }
     );
   }
 
-  getYearlyFilteredByCity(networkIds: number[], city: string, color:string){
+  getYearlyFilteredByCity(networkIds: number[], city: string, color:string, year: number, lower: boolean){
     d3.select("svg#networkYearly").selectAll("*").remove();
     this.networkService.getNetworkYearsFilteredByCity(networkIds, city);
     this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         console.log(this.map)
-        this.drawYearly(this.currentYear, color)
+        this.drawYearly(year, color)
       }
     );
   }
@@ -246,6 +247,16 @@ export class NetworkComponent implements OnInit, OnDestroy {
       data => {
         this.map = data;
         this.drawYearly(1904, "default")
+      }
+    );
+  }
+
+  resetLocationFilter(networkIds: number[], year: number, lower: boolean, color: string){
+    this.networkService.getNetworkYears(networkIds);
+    this.networkService.getMap().subscribe(
+      data => {
+        this.map = data;
+        this.drawYearly(year, color)
       }
     );
   }

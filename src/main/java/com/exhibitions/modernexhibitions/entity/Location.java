@@ -14,9 +14,6 @@ public class Location {
     private Integer id;
 
     @Getter
-    private String venue;
-
-    @Getter
     private String city;
 
     @Getter

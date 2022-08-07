@@ -38,7 +38,7 @@ export class MatrixComponent implements OnInit {
   constructor(private networkService: NetworkService, private router: Router,
               private matrixService: MatrixService, private algorithmsService: AlgorithmsService) {}
 
-  private networkIds: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] ;
+  //private networkIds: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] ;
   private network: NetworkDto = new NetworkDto([],[]);
   countriesArr : string[] = [];
   citiesArr: string[] = [];
@@ -56,7 +56,7 @@ export class MatrixComponent implements OnInit {
    show: boolean = true;
 
   ngOnInit(): void {
-    console.log(this.networkIds.length)
+    //console.log(this.networkIds.length)
   }
 
    getTotal(networkIds: number[], color:string){
@@ -64,7 +64,7 @@ export class MatrixComponent implements OnInit {
      this.networkService.getNetwork(networkIds).subscribe(
       data => {
         this.network= data;
-        console.log(this.network.nodes.length)
+       // console.log(this.network.nodes.length)
         this.drawMatrixTotal(this.network,  this.matrixService.calculateSizeOfRectTotal(this.network.nodes.length),color);
         }
      )
@@ -75,7 +75,7 @@ export class MatrixComponent implements OnInit {
     this.networkService.getNetworkFilteredByCountry(networkIds, country).subscribe(
       data => {
         this.network= data;
-        console.log(this.network)
+        //console.log(this.network)
         this.drawMatrixTotal(this.network,  this.matrixService.calculateSizeOfRectTotal(this.network.nodes.length),color);
       }
     )
@@ -85,16 +85,16 @@ export class MatrixComponent implements OnInit {
     this.granularity = !this.granularity;
   }
 
-  getYearlyFilteredByCountry(networkIds: number[], country: string, color: string){
+  getYearlyFilteredByCountry(networkIds: number[], country: string, color: string, year: number, lower: boolean){
     d3.select("svg#matrixYearly").selectAll("*").remove();
     this.networkService.getNetworkYearsFilteredByCountry(networkIds, country);
-    this.initNetworksMap(color);
+    this.drawHalfMatrix(year, lower, color);
   }
 
-  getYearlyFilteredByCity(networkIds: number[], city: string, color:string){
+  getYearlyFilteredByCity(networkIds: number[], city: string, color:string, year: number, lower: boolean){
     d3.select("svg#matrixYearly").selectAll("*").remove();
     this.networkService.getNetworkYearsFilteredByCity(networkIds, city);
-    this.initNetworksMap(color);
+    this.drawHalfMatrix(year, lower, color);
   }
 
 
@@ -116,10 +116,15 @@ export class MatrixComponent implements OnInit {
     this.initNetworksMap(color);
   }
 
+  resetLocationFilter(networkIds: number[], year: number, lower: boolean, color: string){
+    this.networkService.getNetworkYears(networkIds);
+    this.drawHalfMatrix(year, lower, color);
+  }
+
    drawHalfMatrix(e: number, lower: boolean, color: string){
     this.networkService.getMap().subscribe(
       data => {
-        console.log(e)
+       // console.log(e)
         this.map = data;
         let matrix;
         if(e==1905 /*initial value*/){
@@ -312,7 +317,7 @@ mouseOverTotalRect(d: any, i:any) {
     if(this.granularity){
       this.countries.emit(this.countriesArr);
     } else {
-      console.log(i.city);
+     // console.log(i.city);
       this.cities.emit(this.citiesArr);
     }
     this.year.emit(i.year);
@@ -436,7 +441,7 @@ mouseOverTotalRect(d: any, i:any) {
     this.networkService.getMap().subscribe(
       data => {
         this.map = data;
-        console.log(this.map)
+        //console.log(this.map)
         d3.select("svg#matrixYearly").selectAll("*").remove();
         d3.select("svg#matrixYearly").append("g").attr("id","zoomableYearlyTest").append("g").attr("id","zoomableYearly").attr("transform", "translate("+120 + "," + 90 + ")");
         const matrix = this.matrixService.getLowerMatrix(this.map.get(1904)!,1904);

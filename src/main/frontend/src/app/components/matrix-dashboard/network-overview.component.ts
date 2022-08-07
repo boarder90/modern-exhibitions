@@ -23,12 +23,13 @@ export class NetworkOverviewComponent implements OnInit {
   citiesMap: Map<string, number> = new Map;
   countryPipe: CountryPipe | undefined;
   artist!: ArtistDto;
+  part!: boolean;
   cities: string[] = [];
   countries: string[] = [];
   current: number[] = [];
   year!: number;
   public centralities: boolean = true;
-  reset = true;
+  reset!:boolean;
   currentColor:string = "default";
   private networkIds1: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] ;
   private networkIds2: number[] = [1,2,3,4,5,6,7] ;

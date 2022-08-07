@@ -6,7 +6,7 @@
             <ng-template mdbAccordionItemHeader>Network Selection</ng-template>
             <ng-template mdbAccordionItemBody>
               <div *ngFor="let networkOfMap of map | keyvalue " class="list-unstyled">
-                <button (click)="this.reset= true; this.centralities = !this.centralities; network.getYearly(networkOfMap.value, 'default'); network.getTotal(networkOfMap.value, 'default'); getLocations(networkOfMap.value); setCurrent(networkOfMap.value)" type="button" style="background-color: #f8f9fa" class="list-group-item list-group-item-action border-0">
+                <button (click)="this.value= 1904; this.reset= !this.reset; this.centralities = !this.centralities; network.getYearly(networkOfMap.value, 'default'); network.getTotal(networkOfMap.value, 'default'); getLocations(networkOfMap.value); setCurrent(networkOfMap.value)" type="button" style="background-color: #f8f9fa" class="list-group-item list-group-item-action border-0">
                   {{networkOfMap.key}}
                 </button>
               </div>
@@ -22,7 +22,7 @@
             <ng-template mdbAccordionItemHeader>Filter Links</ng-template>
             <ng-template mdbAccordionItemBody>
               <app-filter-links (currentColor)="this.currentColor = $event"
-                                [current]="this.current" [inputNetwork]="network"
+                                [current]="this.current" [inputNetwork]="network" [lower]="part" [year]="value"
                                 [countries]="countries" [cities]="cities" [reset]="this.reset"></app-filter-links>
             </ng-template>
           </mdb-accordion-item>
@@ -68,7 +68,7 @@
               aria-controls="collapseExample">Total View</button>
       <div class="mt-3" id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse" >
         <div style="width: 50%; margin: auto;">
-          <ngx-slider [(value)]="value" [options]="options" (valueChange)="network.drawHalfMatrix($event, $event%2 == 0, currentColor); this.centralities = !this.centralities"></ngx-slider>
+          <ngx-slider [(value)]="value" [options]="options" (valueChange)="part = $event%2 == 0; network.drawHalfMatrix($event, $event%2 == 0, currentColor); this.centralities = !this.centralities"></ngx-slider>
         </div>
       </div>
     </div>

@@ -11,7 +11,10 @@ export class FilterLinksComponent implements OnInit, OnChanges {
   @Input('current') current: number[] = [];
   @Input('cities') cities: string[] = [];
   @Input('countries')   countries: string[] = [];
-  @Input('reset') reset: boolean = true;
+  @Input('year')  year: number = 1904;
+  @Input('lower')  lower!: boolean;
+  reset: boolean = true;
+  @Input('reset') res!: boolean;
   @Output('currentColor') currentColor: EventEmitter<string>  = new EventEmitter<string>();
   constructor() { }
 
@@ -19,7 +22,13 @@ export class FilterLinksComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.reset = true;
+    if(changes['res']){
+      this.reset = true;
+      this.currentColor.emit("default")
+    }
+    if(changes['current']){
+      this.reset = true;
+      this.currentColor.emit("default")
+    }
   }
-
 }

@@ -6,7 +6,7 @@
           <ng-template mdbAccordionItemHeader>Network Selection</ng-template>
           <ng-template mdbAccordionItemBody>
             <div *ngFor="let network2 of map | keyvalue " class="list-unstyled">
-              <button (click)="this.reset=true; this.network.getTotal(network2.value);this.network.getYearly(network2.value);getLocations(network2.value); setCurrent(network2.value); this.resetCentralities = !this.resetCentralities" type="button" style="background-color: #f8f9fa" class="list-group-item list-group-item-action border-0">
+              <button (click)="this.value = 1904; this.reset=true; this.network.getTotal(network2.value);this.network.getYearly(network2.value);getLocations(network2.value); setCurrent(network2.value); this.resetCentralities = !this.resetCentralities" type="button" style="background-color: #f8f9fa" class="list-group-item list-group-item-action border-0">
                 {{network2.key}}
               </button>
             </div>
@@ -21,7 +21,7 @@
         <mdb-accordion-item  style="background-color:#f8f9fa !important;">
           <ng-template mdbAccordionItemHeader>Filter Links</ng-template>
           <ng-template mdbAccordionItemBody>
-            <app-filter-links (currentColor)="this.currentColor = $event"
+            <app-filter-links (currentColor)="this.currentColor = $event" [year]="value"
                               [current]="this.current" [inputNetwork]="network"
                               [countries]="countries" [cities]="cities" [reset]="this.reset"></app-filter-links>
           </ng-template>
