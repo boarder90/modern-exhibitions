@@ -21,7 +21,7 @@
         <mdb-accordion-item  style="background-color:#f8f9fa !important;">
           <ng-template mdbAccordionItemHeader>Filter Links</ng-template>
           <ng-template mdbAccordionItemBody>
-            <app-filter-links (currentColor)="this.currentColor = $event" [year]="value"
+            <app-filter-links (filterActive)="this.filterActive = $event" (currentColor)="this.currentColor = $event" [year]="value"
                               [current]="this.current" [inputNetwork]="network"
                               [countries]="countries" [cities]="cities" [reset]="this.reset"></app-filter-links>
           </ng-template>
@@ -29,7 +29,7 @@
         <mdb-accordion-item style="background-color:#f8f9fa !important;">
           <ng-template mdbAccordionItemHeader>Centrality</ng-template>
           <ng-template mdbAccordionItemBody>
-            <app-centrality [inputNetwork]="network" [reset]="this.resetCentralities" [yearly]="this.yearly" [current]="this.current"></app-centrality>
+            <app-centrality [filterActive]="this.filterActive" [inputNetwork]="network" [reset]="this.resetCentralities" [yearly]="this.yearly" [current]="this.current"></app-centrality>
           </ng-template>
         </mdb-accordion-item>
         <mdb-accordion-item style="background-color:#f8f9fa !important; " class="text-center" (itemShow)="selected = false" (itemHide)="selected = false">

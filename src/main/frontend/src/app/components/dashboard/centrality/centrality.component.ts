@@ -11,6 +11,7 @@ export class CentralityComponent implements OnInit, OnChanges{
   @Input('current') current: number[] = [];
   @Input('yearly') yearly: boolean = false;
   @Input('reset') resetCentralities: boolean = true;
+  @Input('filterActive') filterActive: boolean = false;
 
   constructor() { }
 
@@ -18,6 +19,9 @@ export class CentralityComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if(this.current.length>0){
+      this.network.resizeDefault(this.current);
+    }
     this.resetCentralities = true;
   }
 

@@ -254,6 +254,9 @@ export class NetworkComponent implements OnInit, OnDestroy {
   }
 
   resetLocationFilter(networkIds: number[], year: number, lower: boolean, color: string){
+    d3.selectAll("text").style("opacity", 1);
+    d3.selectAll("path").style("opacity",1);
+    d3.selectAll("circle").style("opacity", 1);
     this.networkService.getNetworkYears(networkIds);
     this.networkService.getMap().subscribe(
       data => {

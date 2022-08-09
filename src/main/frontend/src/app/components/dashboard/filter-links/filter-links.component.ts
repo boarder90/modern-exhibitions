@@ -16,6 +16,7 @@ export class FilterLinksComponent implements OnInit, OnChanges {
   reset: boolean = true;
   @Input('reset') res!: boolean;
   @Output('currentColor') currentColor: EventEmitter<string>  = new EventEmitter<string>();
+  @Output('filterActive') filterActive: EventEmitter<boolean>  = new EventEmitter<boolean>();
   constructor() { }
 
   ngOnInit(): void {

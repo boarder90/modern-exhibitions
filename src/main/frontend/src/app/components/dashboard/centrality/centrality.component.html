@@ -10,7 +10,7 @@
   />
   <label class="form-check-label" for="flexRadioDefaulti">Default</label>
 </div>
-<div class="form-check" *ngIf="this.current.length>0">
+<div class="form-check" *ngIf="this.current.length>0 && !this.filterActive">
   <input
     mdbRadio
     class="form-check-input"
@@ -21,7 +21,7 @@
   />
   <label class="form-check-label" for="flexRadioDefaultn"> Weighted degree centrality</label>
 </div>
-<div class="form-check" *ngIf="this.current.length>0">
+<div class="form-check" *ngIf="this.current.length>0 &&!this.filterActive">
   <input
     mdbRadio
     class="form-check-input"

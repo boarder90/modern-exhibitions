@@ -47,6 +47,7 @@ export class NetworkOverviewComponent implements OnInit {
   selected: boolean = false;
   selectedArtists: string = "Nothing selected";
   selectedArtistsIds: number[] = [];
+  filterActive: boolean = false;
 
   options: Options = {
     stepsArray: [
