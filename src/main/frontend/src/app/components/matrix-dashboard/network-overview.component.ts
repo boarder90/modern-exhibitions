@@ -33,13 +33,13 @@ export class NetworkOverviewComponent implements OnInit {
   currentColor:string = "default";
   private networkIds1: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] ;
   private networkIds2: number[] = [1,2,3,4,5,6,7] ;
-  private one: number[] = [1] ;
+ /* private one: number[] = [1] ;
   private five: number[] = [1,2,3,4,5] ;
   private ten: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13] ;
   private fifteen: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] ;
   private twenty: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26] ;
   private twentyfive: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20,21,22,23,24,25,26,27,28,29,30,31,32,33] ;
-  private thirty: number[] = [1,2,3,4,5,6,20,21,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51] ;
+  private thirty: number[] = [1,2,3,4,5,6,20,21,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51] ;*/
   private networkIds3: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] ;
   map: Map<string, number[]> = new Map();
   bool: boolean = true;
@@ -105,17 +105,16 @@ export class NetworkOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.map = this.localService.getAllNetworksAsMap();
-    console.log(this.networkIds1)
     this.map.set("Big network", this.networkIds1);
     this.map.set("Small network", this.networkIds2);
     this.map.set("Medium network", this.networkIds3);
-    this.map.set("One", this.one);
+  /*  this.map.set("One", this.one);
     this.map.set("Five", this.five);
     this.map.set("Ten", this.ten);
     this.map.set("Fifteen", this.fifteen);
     this.map.set("Twenty", this.twenty);
     this.map.set("twentyfive", this.twentyfive);
-    this.map.set("thirty", this.thirty);
+    this.map.set("thirty", this.thirty);*/
     this.cdr.detectChanges();
   }
 
@@ -141,7 +140,7 @@ export class NetworkOverviewComponent implements OnInit {
   setCountriesArray(e: any){
     this.countriesMap = new Map;
     this.citiesMap = new Map;
-    this.countriesMap = this.dashboardService.setCountriesArray(e);
+    this.countriesMap = this.dashboardService.setCountriesMap(e);
   }
 
   setYear(e:any){
@@ -165,7 +164,7 @@ export class NetworkOverviewComponent implements OnInit {
   setCitiesArray(e: any){
     this.citiesMap = new Map;
     this.countriesMap = new Map;
-    this.citiesMap = this.dashboardService.setCitiesArray(e);
+    this.citiesMap = this.dashboardService.setCitiesMap(e);
   }
 
 }

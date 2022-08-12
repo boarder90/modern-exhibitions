@@ -38,7 +38,6 @@ export class MatrixComponent implements OnInit {
   constructor(private networkService: NetworkService, private router: Router,
               private matrixService: MatrixService, private algorithmsService: AlgorithmsService) {}
 
-  //private networkIds: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] ;
   private network: NetworkDto = new NetworkDto([],[]);
   countriesArr : string[] = [];
   citiesArr: string[] = [];
@@ -87,13 +86,13 @@ export class MatrixComponent implements OnInit {
 
   getYearlyFilteredByCountry(networkIds: number[], country: string, color: string, year: number, lower: boolean){
     d3.select("svg#matrixYearly").selectAll("*").remove();
-    this.networkService.getNetworkYearsFilteredByCountry(networkIds, country);
+    this.networkService.getNetworkYearlyFilteredByCountry(networkIds, country);
     this.drawHalfMatrix(year, lower, color);
   }
 
   getYearlyFilteredByCity(networkIds: number[], city: string, color:string, year: number, lower: boolean){
     d3.select("svg#matrixYearly").selectAll("*").remove();
-    this.networkService.getNetworkYearsFilteredByCity(networkIds, city);
+    this.networkService.getNetworkYearlyFilteredByCity(networkIds, city);
     this.drawHalfMatrix(year, lower, color);
   }
 
@@ -274,16 +273,16 @@ mouseOverTotalRect(d: any, i:any) {
     } else {
       this.cities.emit(this.citiesArr);
     }
-  d3.selectAll("rect[view='total']").style("stroke-width", function(p:any){ return p.x==i.x && p.y==i.y /* || p.x==i.y && p.y==i.x*/? 4: 1});
+  d3.selectAll("rect[view='total']").filter(function(p:any){return p.x==i.x && p.y==i.y}).raise().style("stroke", "orange").style("stroke-width", 5);
   if(!this.centralitiesSet){
     d3.selectAll("text")
       .filter(function() {
-        return d3.select(this).attr("artistX") === (i.id.split(",")[1]) || d3.select(this).attr("artistY") === (i.id.split(",")[0]) // filter by single attribute
+        return d3.select(this).attr("artistX") === (i.id.split(",")[1]) || d3.select(this).attr("artistY") === (i.id.split(",")[0])
       }).style("font-weight","bolder");
   }
   d3.selectAll("text")
     .filter(function() {
-      return d3.select(this).attr("artistX") !== (i.id.split(",")[1]) && d3.select(this).attr("artistY") !== (i.id.split(",")[0]) // filter by single attribute
+      return d3.select(this).attr("artistX") !== (i.id.split(",")[1]) && d3.select(this).attr("artistY") !== (i.id.split(",")[0])
     }).style("opacity","0.4");
 }
 
@@ -317,11 +316,10 @@ mouseOverTotalRect(d: any, i:any) {
     if(this.granularity){
       this.countries.emit(this.countriesArr);
     } else {
-     // console.log(i.city);
       this.cities.emit(this.citiesArr);
     }
     this.year.emit(i.year);
-    d3.selectAll("rect[view='yearly']").style("stroke-width", function(p:any){ return p.x==i.x && p.y==i.y  || p.x==i.y && p.y==i.x? 4: 1});
+    d3.selectAll("rect[view='yearly']").filter(function(p:any){return p.x==i.x && p.y==i.y  || p.x==i.y && p.y==i.x}).raise().style("stroke", "orange").style("stroke-width", 5);
 
     if(!this.centralitiesSet) {
       d3.selectAll("text")
@@ -425,7 +423,7 @@ mouseOverTotalRect(d: any, i:any) {
   mouseOutRect(d: any, i:any, yearly: boolean) {
     this.countriesArr = [];
     this.countries.emit(this.countriesArr);
-    d3.selectAll("rect").style("stroke-width", "1");
+    d3.selectAll("rect").style("stroke-width", "1").style("stroke","gray");
     d3.select("#tooltip")
       .style("opacity","0")
     if(!this.centralitiesSet){
