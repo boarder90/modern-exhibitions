@@ -310,7 +310,7 @@ mouseOverTotalRect(d: any, i:any) {
    *  2022 - Modified by Adam Nedas.
    *
    */
-  mouseOverYearlyRect(d: any, i:any) {
+  mouseOverYearlyRect(d: any, i:any, part: string) {
     this.countriesArr = i.country;
     this.citiesArr = i.city;
     if(this.granularity){
@@ -322,17 +322,29 @@ mouseOverTotalRect(d: any, i:any) {
     d3.selectAll("rect[view='yearly']").filter(function(p:any){return p.x==i.x && p.y==i.y  || p.x==i.y && p.y==i.x}).raise().style("stroke", "orange").style("stroke-width", 5);
 
     if(!this.centralitiesSet) {
-      d3.selectAll("text")
-        .filter(function () {
-          return d3.select(this).attr("UpperX") === (i.id.split(",")[0]) || d3.select(this).attr("LowerX") === (i.id.split(",")[1]) || d3.select(this).attr("LowerY") === (i.id.split(",")[0]) || d3.select(this).attr("UpperY") === (i.id.split(",")[1]) // filter by single attribute
-        }).style("font-weight", "bolder").style("font-size", "20px");
+      if(part==="upper"){
+        d3.selectAll("text")
+          .filter(function () {
+            return d3.select(this).attr("UpperX") === (i.id.split(",")[1]) || d3.select(this).attr("LowerX") === (i.id.split(",")[0]) || d3.select(this).attr("LowerY") === (i.id.split(",")[1]) || d3.select(this).attr("UpperY") === (i.id.split(",")[0])
+          }).style("font-weight", "bolder").style("font-size", "20px");
+      } else {
+        d3.selectAll("text")
+          .filter(function () {
+            return d3.select(this).attr("UpperX") === (i.id.split(",")[0]) || d3.select(this).attr("LowerX") === (i.id.split(",")[1]) || d3.select(this).attr("LowerY") === (i.id.split(",")[0]) || d3.select(this).attr("UpperY") === (i.id.split(",")[1])
+          }).style("font-weight", "bolder").style("font-size", "20px");
+      }
     }
-
-    d3.selectAll("text")
-      .filter(function() {
-        return d3.select(this).attr("UpperX") !== (i.id.split(",")[0]) && d3.select(this).attr("LowerX") !== (i.id.split(",")[1]) &&  d3.select(this).attr("LowerY") !== (i.id.split(",")[0]) && d3.select(this).attr("UpperY") !== (i.id.split(",")[1]) // filter by single attribute
+    if(part==="upper"){
+      d3.selectAll("text")
+        .filter(function() {
+          return d3.select(this).attr("currentYear")=== null && d3.select(this).attr("UpperX") !== (i.id.split(",")[1]) && d3.select(this).attr("LowerX") !== (i.id.split(",")[0]) &&  d3.select(this).attr("LowerY") !== (i.id.split(",")[1]) && d3.select(this).attr("UpperY") !== (i.id.split(",")[0])
         }).style("opacity","0.2");
-
+    } else {
+      d3.selectAll("text")
+        .filter(function() {
+          return d3.select(this).attr("currentYear")=== null && d3.select(this).attr("UpperX") !== (i.id.split(",")[0]) && d3.select(this).attr("LowerX") !== (i.id.split(",")[1]) &&  d3.select(this).attr("LowerY") !== (i.id.split(",")[0]) && d3.select(this).attr("UpperY") !== (i.id.split(",")[1])
+        }).style("opacity","0.2");
+    }
   }
 
 
@@ -341,7 +353,7 @@ mouseOverTotalRect(d: any, i:any) {
     if(!this.centralitiesSet){
       d3.selectAll("text")
         .filter(function() {
-          return d3.select(this).attr("name") === (i.name) // filter by single attribute
+          return d3.select(this).attr("name") === (i.name)
         }).style("font-weight",20);
     }
   }
@@ -576,7 +588,13 @@ mouseOverTotalRect(d: any, i:any) {
 
     this.reColor();
 
-    d3.selectAll("rect[view='yearly']").on("mouseover", (d,i)=> this.mouseOverYearlyRect(d,i)).on("mouseout", (d, i) => this.mouseOutRect(d,i, true)).on("click", (d, i) => this.routeToMap(i));
+    d3.selectAll("rect[view='yearly']").filter(function () {
+      return d3.select(this).attr("part")==="upper"
+    }).on("mouseover", (d,i)=> this.mouseOverYearlyRect(d,i,"upper")).on("mouseout", (d, i) => this.mouseOutRect(d,i, true)).on("click", (d, i) => this.routeToMap(i));
+
+    d3.selectAll("rect[view='yearly']").filter(function () {
+      return d3.select(this).attr("part")==="lower"
+    }).on("mouseover", (d,i)=> this.mouseOverYearlyRect(d,i,"lower")).on("mouseout", (d, i) => this.mouseOutRect(d,i, true)).on("click", (d, i) => this.routeToMap(i));
     d3.selectAll("text").on("mouseover", (d,i) => this.mouseOverText(d,i)).on("mouseout", (d, i)=>this.mouseOutText(d,i));
   }
 
@@ -615,7 +633,7 @@ mouseOverTotalRect(d: any, i:any) {
        .data(matrix)
        .enter()
        .append("rect").attr("view","yearly")
-       .attr("class","grid")
+       .attr("class","grid").attr("part", part)
        .attr("width",scale)
        .attr("height",scale)
        .style("fill-opacity", (d:any)=> d.weight * .2)
