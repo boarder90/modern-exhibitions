@@ -12,6 +12,11 @@ export class LocationService {
 
   constructor(private httpClient: HttpClient) { }
 
+  /**
+   * Returns all the locations (cities and countries) of a network
+   *
+   * @param artistIds ids of the artists / network
+   */
   getLocationsOfNetwork(artistIds: (number[]|null)){
 
     let params = new HttpParams();

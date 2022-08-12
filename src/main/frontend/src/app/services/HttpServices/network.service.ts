@@ -17,35 +17,64 @@ export class NetworkService {
   private hasLinksYearly$: ReplaySubject<Map<number,Map<string, number>>> = new ReplaySubject<Map<number, Map<string,number>>>(1);
   private hasLinks$: ReplaySubject<Map<string, number>> = new ReplaySubject<Map<string,number>>(1);
 
+  constructor(private httpClient: HttpClient) {}
+
+  /**
+   * Returns current map of yearly networks as an observable
+   */
   getMap(): Observable<Map<number,YearlyNetworkDto>> {
     return this.map$.asObservable();
   }
 
+  /**
+   * Sets map of yearly networks
+   *
+   * @param map
+   */
   setMap(map: Map<number,YearlyNetworkDto>) {
     this.map$.next(map);
   }
 
+  /**
+   * Sets map: For every yearly network, store all the existing links
+   *
+   * @param map
+   */
   setHasLinksYearly(map: Map<number,Map<string, number>>) {
     this.hasLinksYearly$.next(map);
   }
 
+  /**
+   * Returns current map of existing yearly links
+   *
+   */
   getHasLinksYearly() {
     return this.hasLinksYearly$.asObservable();
   }
 
+  /**
+   * Sets map: For every total network, store all the existing links
+   *
+   * @param map
+   */
   setHasLinks(map: Map<string, number>) {
     this.hasLinks$.next(map);
   }
 
+  /**
+   * Returns current map of existing total links
+   */
   getHasLinks() {
     return this.hasLinks$.asObservable();
   }
 
-  constructor(private httpClient: HttpClient) {
-
-}
-
-  getTotalEgoNetwork(id: number, numExhibitions: number){
+  /**
+   * Returns total ego network
+   *
+   * @param id id of the respective artist
+   * @param numExhibitions optional filter which sets the minimum amount of exhibitions (i.e. weight) required
+   */
+  getTotalEgoNetwork(id: number, numExhibitions: number | null){
     let params = new HttpParams();
     if(numExhibitions!== null){
       params = params.append('numExhibitions', numExhibitions);
@@ -53,6 +82,11 @@ export class NetworkService {
     return this.httpClient.get<NetworkDto>(this.networkBaseUri + `/${id}`, {params: params})
   }
 
+  /**
+   * Returns a total artist network by its IDs.
+   *
+   * @param ids ids of the artists / nodes of the network
+   */
   getNetwork(ids: number[]){
     let params = new HttpParams();
     if(ids!==null){
@@ -73,6 +107,12 @@ export class NetworkService {
     ));
   }
 
+  /**
+   * Returns network filtered by a country
+   *
+   * @param ids ids of the artists / nodes of the network
+   * @param country name of the country
+   */
   getNetworkFilteredByCountry(ids: number[], country: string){
     let params = new HttpParams();
     if(ids!==null){
@@ -82,6 +122,12 @@ export class NetworkService {
     return this.httpClient.get<NetworkDto>(this.networkBaseUri + "/country", {params: params});
   }
 
+  /**
+   * Returns network filtered by a city
+   *
+   * @param ids ids of the artists / nodes of the network
+   * @param city name of the city
+   */
   getNetworkFilteredByCity(ids: number[], city: string){
     let params = new HttpParams();
     if(ids!==null){
@@ -91,7 +137,13 @@ export class NetworkService {
     return this.httpClient.get<NetworkDto>(this.networkBaseUri + "/city", {params: params});
   }
 
-  getNetworkYearsFilteredByCountry(ids: number[], country: string){
+  /**
+   * Returns yearly network filtered by a country
+   *
+   * @param ids ids of the artists / nodes of the network
+   * @param country name of the country
+   */
+  getNetworkYearlyFilteredByCountry(ids: number[], country: string){
     let params = new HttpParams();
     if(ids!==null){
       ids.forEach( id => {params = params.append("ids",id)});
@@ -110,7 +162,13 @@ export class NetworkService {
     )
   }
 
-  getNetworkYearsFilteredByCity(ids: number[], city: string){
+  /**
+   * Returns yearly network filtered by a city
+   *
+   * @param ids ids of the artists / nodes of the network
+   * @param city name of the city
+   */
+  getNetworkYearlyFilteredByCity(ids: number[], city: string){
     let params = new HttpParams();
     if(ids!==null){
       ids.forEach( id => {params = params.append("ids",id)});
@@ -138,6 +196,11 @@ export class NetworkService {
     )
   }
 
+  /**
+   * Returns yearly networks
+   *
+   * @param ids ids of the artists / nodes of the network
+   */
   getNetworkYears(ids: number[]){
     let params = new HttpParams();
     if(ids!==null){

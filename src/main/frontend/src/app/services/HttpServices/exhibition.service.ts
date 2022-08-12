@@ -13,10 +13,20 @@ export class ExhibitionService {
 
   private exhibitionBaseUri: string = environment.Backend + '/exhibitions';
 
+  /**
+   * Returns all exhibitions
+   */
   getExhibitions(){
     return this.httpClient.get<ExhibitionDto[]>(this.exhibitionBaseUri)
   }
 
+  /**
+   * Returns all exhibitions filtered by location, year and / or artistIds
+   *
+   * @param location latitude / longitude
+   * @param year
+   * @param artistIds
+   */
   getExhibitionsFiltered(location: (number[]|null), year: (number|null), artistIds: (number[]|null)){
     let params = new HttpParams();
     if(year!== null){
@@ -31,6 +41,11 @@ export class ExhibitionService {
     return this.httpClient.get<ExhibitionDto[]>(this.exhibitionBaseUri + '/filtered', {params: params});
   }
 
+  /**
+   * Returns all exhibition locations as a GeoJSON FeatureCollection
+   *
+   * @param artistIds optional parameter. Filter the exhibitions by a given artist network.
+   */
   getExhibitionLocations(artistIds: (number[]|null)){
 
     let params = new HttpParams();
@@ -42,6 +57,11 @@ export class ExhibitionService {
     return this.httpClient.get<GeoJSON.FeatureCollection>(this.exhibitionBaseUri + '/locations', {params: params})
   }
 
+  /**
+   * Returns all exhibition locations ordered by their year as a GeoJSON FeatureCollection
+   *
+   * @param artistIds optional parameter. Filter the exhibitions by a given artist network.
+   */
   getExhibitionLocationsYearly(artistIds: (number[]|null)) {
 
     let params = new HttpParams();
