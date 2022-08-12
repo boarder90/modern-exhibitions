@@ -91,7 +91,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
   getYearlyFilteredByCountry(networkIds: number[], country: string, color: string, year: number, lower: boolean){
     console.log(this.currentYear + " " + color)
     d3.select("svg#networkYearly").selectAll("*").remove();
-    this.networkService.getNetworkYearsFilteredByCountry(networkIds, country);
+    this.networkService.getNetworkYearlyFilteredByCountry(networkIds, country);
     this.networkService.getMap().subscribe(
       data => {
         this.map = data;
@@ -103,7 +103,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
 
   getYearlyFilteredByCity(networkIds: number[], city: string, color:string, year: number, lower: boolean){
     d3.select("svg#networkYearly").selectAll("*").remove();
-    this.networkService.getNetworkYearsFilteredByCity(networkIds, city);
+    this.networkService.getNetworkYearlyFilteredByCity(networkIds, city);
     this.networkService.getMap().subscribe(
       data => {
         this.map = data;
@@ -174,7 +174,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
     d3.selectAll("circle").filter(function () {
       return d3.select(this).attr("id") == i.id
     })
-      .attr('stroke', 'yellow').attr('stroke-width', 7);
+      .attr('stroke', 'orange').attr('stroke-width', 7);
 
     if(yearly){
       this.getConnectionsOfNode(i.id);
@@ -276,7 +276,6 @@ export class NetworkComponent implements OnInit, OnDestroy {
   }
 
   emitArtist(d: any,i: any){
-    console.log(i.id);
     d3.selectAll("text")
       .filter(function() {
         return d3.select(this).attr("id") === (String(i.id))
@@ -473,7 +472,8 @@ export class NetworkComponent implements OnInit, OnDestroy {
       .attr('x', 45)
       .attr('y', '0.31em')
       .attr('id', (d:any) =>d.id)
-      .text((d: { name: any; }) => d.name)
+      .text((d: { name: any; }) => d.name).
+       attr("font-size", "20px").style("text-shadow", "1px 0 white, -1px 0 white, 0 1px white, 0 -1px white")
 
     node.on('mouseover', (d: any, i: any) => {
       this.showArtist(d, i, yearly);

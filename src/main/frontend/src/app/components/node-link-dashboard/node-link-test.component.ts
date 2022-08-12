@@ -6,6 +6,7 @@ import {LocationService} from "../../services/HttpServices/location.service";
 import {DashboardService} from "../../services/dashboard.service";
 import {Router} from "@angular/router";
 import {ArtistService} from "../../services/HttpServices/artist.service";
+import {LocalService} from "../../services/local.service";
 
 @Component({
   selector: 'app-node-link-test',
@@ -93,10 +94,11 @@ export class NodeLinkTestComponent implements OnInit {
   };
 
 
-  constructor(private locationService: LocationService, private router: Router, private artistService: ArtistService, private cdr: ChangeDetectorRef, private dashboardService: DashboardService) {
+  constructor(private localService: LocalService, private locationService: LocationService, private router: Router, private artistService: ArtistService, private cdr: ChangeDetectorRef, private dashboardService: DashboardService) {
   }
 
   ngOnInit(): void {
+    this.map = this.localService.getAllNetworksAsMap();
     this.map.set("Big network", this.networkIds1);
     this.map.set("Small network", this.networkIds2);
     this.map.set("Medium network", this.networkIds3);
@@ -128,7 +130,7 @@ export class NodeLinkTestComponent implements OnInit {
   setCountriesArray(e: any){
     this.countriesMap = new Map;
     this.citiesMap = new Map;
-    this.countriesMap = this.dashboardService.setCountriesArray(e);
+    this.countriesMap = this.dashboardService.setCountriesMap(e);
   }
 
   artistLinkSelected(e:string){
@@ -148,6 +150,6 @@ export class NodeLinkTestComponent implements OnInit {
   setCitiesArray(e: any){
     this.countriesMap = new Map;
     this.citiesMap = new Map;
-    this.citiesMap = this.dashboardService.setCitiesArray(e);
+    this.citiesMap = this.dashboardService.setCitiesMap(e);
   }
 }
