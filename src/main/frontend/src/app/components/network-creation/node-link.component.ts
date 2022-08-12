@@ -6,6 +6,7 @@ import {ArtistDto} from "../../dtos/ArtistDto";
 import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {ModalComponent} from "../modals/modal/modal.component";
 import {LocalService} from "../../services/local.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-node-link',
@@ -15,7 +16,7 @@ import {LocalService} from "../../services/local.service";
 export class NodeLinkComponent implements OnInit {
 
   constructor(private networkService: NetworkService, private artistService: ArtistService,
-              private modalService: MdbModalService, private localService: LocalService) { }
+              private modalService: MdbModalService, private localService: LocalService, private  router: Router) { }
 
   @ViewChild('egoComponent') ego: any;
 
@@ -94,6 +95,12 @@ export class NodeLinkComponent implements OnInit {
     d3.select('#tooltip').style("opacity", .9)
       .style("left", `${d.pageX + 14}px`)
       .style("top", `${d.pageY + 14}px`)
+  }
+
+  reload(){
+    this.router.navigateByUrl('/' , { skipLocationChange: true }).then(() => {
+      this.router.navigate(['network-creation']);
+    });
   }
 
 

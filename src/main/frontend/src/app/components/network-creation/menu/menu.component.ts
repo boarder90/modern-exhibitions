@@ -71,17 +71,26 @@ export class MenuComponent implements OnInit {
   }
 
   edit(network: string){
-    this.artistService.getArtistsByIds(this.localService.getNetwork(network)).subscribe(
-      data => {
-        this.nameSelected = true;
-        this.nameSelectedEmit.emit(true);
-        this.name = network;
-        this.nameOutputEmit.emit(this.name);
-        this.selection = this.localService.getNetwork(network);
-        this.selectionArtists = data;
-        this.selectionEmit.emit(this.selection);
-        this.selectedArtistsEmit.emit(this.selectionArtists);
-      });
+    if(this.localService.getNetwork(network).length>0){
+      this.artistService.getArtistsByIds(this.localService.getNetwork(network)).subscribe(
+        data => {
+          this.nameSelected = true;
+          this.nameSelectedEmit.emit(true);
+          this.name = network;
+          this.nameOutputEmit.emit(this.name);
+          this.selection = this.localService.getNetwork(network);
+          this.selectionArtists = data;
+          this.selectionEmit.emit(this.selection);
+          this.selectedArtistsEmit.emit(this.selectionArtists);
+        });
+    } else {
+      this.nameSelected = true;
+      this.nameSelectedEmit.emit(true);
+      this.name = network;
+      this.nameOutputEmit.emit(this.name);
+      this.selection = this.localService.getNetwork(network);
+      this.selectionEmit.emit(this.selection);
+    }
   }
 
 }
