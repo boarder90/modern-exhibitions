@@ -38,7 +38,7 @@ You can find the connection properties to Neo4j in the ``application.properties`
 
 ## Neo4j
 
-This application uses the GPLv3-licensed Neo4j Community Edition. Please download Neo4j Community Server 4.4.6 using this [link](https://neo4j.com/download-thanks/?edition=community&release=4.4.6&flavour=unix) (direct download!).
+This application uses the GPLv3-licensed Neo4j Community Edition. Please download Neo4j Community Server 4.4.6 using this [link](https://neo4j.com/download-thanks/?edition=community&release=4.4.6&flavour=unix) (direct download!). Please make sure to download and install the GDS, using [the jar file of the 2.0.4 release](https://github.com/neo4j/graph-data-science/releases/tag/2.0.4).
 You can load the database using [admin tools](https://neo4j.com/docs/operations-manual/current/backup-restore/restore-dump/).
 
 
