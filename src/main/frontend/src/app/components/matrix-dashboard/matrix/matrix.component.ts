@@ -42,7 +42,6 @@ export class MatrixComponent implements OnInit {
   countriesArr : string[] = [];
   citiesArr: string[] = [];
   private granularity: boolean = true;
-  private previousFontWeight: string = "";
   private currentLower!: number;
   private currentUpper!: number;
   private color: string  = "default"
@@ -55,7 +54,6 @@ export class MatrixComponent implements OnInit {
    show: boolean = true;
 
   ngOnInit(): void {
-    //console.log(this.networkIds.length)
   }
 
    getTotal(networkIds: number[], color:string){
@@ -63,7 +61,6 @@ export class MatrixComponent implements OnInit {
      this.networkService.getNetwork(networkIds).subscribe(
       data => {
         this.network= data;
-       // console.log(this.network.nodes.length)
         this.drawMatrixTotal(this.network,  this.matrixService.calculateSizeOfRectTotal(this.network.nodes.length),color);
         }
      )
@@ -96,8 +93,6 @@ export class MatrixComponent implements OnInit {
     this.drawHalfMatrix(year, lower, color);
   }
 
-
-
   getTotalFilteredByCity(networkIds: number[], city: string, color: string){
     d3.select("svg#matrixTotal").selectAll("*").remove();
     this.networkService.getNetworkFilteredByCity(networkIds, city).subscribe(
@@ -107,7 +102,6 @@ export class MatrixComponent implements OnInit {
       }
     )
   }
-
 
   getYearly(networkIds: number[], color: string){
     d3.select("svg").selectAll("*").remove();
@@ -123,7 +117,6 @@ export class MatrixComponent implements OnInit {
    drawHalfMatrix(e: number, lower: boolean, color: string){
     this.networkService.getMap().subscribe(
       data => {
-       // console.log(e)
         this.map = data;
         let matrix;
         if(e==1905 /*initial value*/){
@@ -279,26 +272,31 @@ mouseOverTotalRect(d: any, i:any) {
       .filter(function() {
         return d3.select(this).attr("artistX") === (i.id.split(",")[1]) || d3.select(this).attr("artistY") === (i.id.split(",")[0])
       }).style("font-weight","bolder");
+    d3.selectAll("text")
+      .filter(function() {
+        return d3.select(this).attr("artistX") !== (i.id.split(",")[1]) && d3.select(this).attr("artistY") !== (i.id.split(",")[0])
+      }).style("opacity","0.4");
+  } else {
+    d3.selectAll("text")
+      .filter(function() {
+        return d3.select(this).attr("artistX") === (i.id.split(",")[1]) || d3.select(this).attr("artistY") === (i.id.split(",")[0])
+      }).style("text-shadow", "1px 0 yellow, -1px 0 yellow, 0 1px yellow, 0 -1px yellow");
   }
-  d3.selectAll("text")
-    .filter(function() {
-      return d3.select(this).attr("artistX") !== (i.id.split(",")[1]) && d3.select(this).attr("artistY") !== (i.id.split(",")[0])
-    }).style("opacity","0.4");
 }
 
   mouseOverText(d: any, i:any) {
 
     this.artistData.emit(i);
     if(!this.centralitiesSet){
-      this.previousFontWeight =  d3.selectAll("text")
-        .filter(function() {
-          return d3.select(this).attr("name") === (i.name) // filter by single attribute
-        }).style("font-weight");
         d3.selectAll("text")
         .filter(function() {
-          return d3.select(this).attr("name") === (i.name) // filter by single attribute
+          return d3.select(this).attr("name") === (i.name)
         }).style("font-weight","bolder");
-
+    } else {
+      d3.selectAll("text")
+        .filter(function() {
+          return d3.select(this).attr("name") === (i.name)
+        }).style("text-shadow", "1px 0 yellow, -1px 0 yellow, 0 1px yellow, 0 -1px yellow");
     }
   }
 
@@ -333,17 +331,31 @@ mouseOverTotalRect(d: any, i:any) {
             return d3.select(this).attr("UpperX") === (i.id.split(",")[0]) || d3.select(this).attr("LowerX") === (i.id.split(",")[1]) || d3.select(this).attr("LowerY") === (i.id.split(",")[0]) || d3.select(this).attr("UpperY") === (i.id.split(",")[1])
           }).style("font-weight", "bolder").style("font-size", "20px");
       }
-    }
-    if(part==="upper"){
-      d3.selectAll("text")
-        .filter(function() {
-          return d3.select(this).attr("currentYear")=== null && d3.select(this).attr("UpperX") !== (i.id.split(",")[1]) && d3.select(this).attr("LowerX") !== (i.id.split(",")[0]) &&  d3.select(this).attr("LowerY") !== (i.id.split(",")[1]) && d3.select(this).attr("UpperY") !== (i.id.split(",")[0])
-        }).style("opacity","0.2");
+      if(part==="upper"){
+        d3.selectAll("text")
+          .filter(function() {
+            return d3.select(this).attr("currentYear")=== null && d3.select(this).attr("UpperX") !== (i.id.split(",")[1]) && d3.select(this).attr("LowerX") !== (i.id.split(",")[0]) &&  d3.select(this).attr("LowerY") !== (i.id.split(",")[1]) && d3.select(this).attr("UpperY") !== (i.id.split(",")[0])
+          }).style("opacity","0.2");
+      } else {
+        d3.selectAll("text")
+          .filter(function() {
+            return d3.select(this).attr("currentYear")=== null && d3.select(this).attr("UpperX") !== (i.id.split(",")[0]) && d3.select(this).attr("LowerX") !== (i.id.split(",")[1]) &&  d3.select(this).attr("LowerY") !== (i.id.split(",")[0]) && d3.select(this).attr("UpperY") !== (i.id.split(",")[1])
+          }).style("opacity","0.2");
+      }
     } else {
-      d3.selectAll("text")
-        .filter(function() {
-          return d3.select(this).attr("currentYear")=== null && d3.select(this).attr("UpperX") !== (i.id.split(",")[0]) && d3.select(this).attr("LowerX") !== (i.id.split(",")[1]) &&  d3.select(this).attr("LowerY") !== (i.id.split(",")[0]) && d3.select(this).attr("UpperY") !== (i.id.split(",")[1])
-        }).style("opacity","0.2");
+      if(part==="lower") {
+        d3.selectAll("text")
+          .filter(function () {
+            return d3.select(this).attr("UpperX") === (i.id.split(",")[0]) || d3.select(this).attr("LowerX") === (i.id.split(",")[1]) || d3.select(this).attr("LowerY") === (i.id.split(",")[0])
+              || d3.select(this).attr("UpperY") === (i.id.split(",")[1])
+          }).style("text-shadow", "1px 0 yellow, -1px 0 yellow, 0 1px yellow, 0 -1px yellow");
+      } else {
+        d3.selectAll("text")
+          .filter(function () {
+            return d3.select(this).attr("UpperX") === (i.id.split(",")[1]) || d3.select(this).attr("LowerX") === (i.id.split(",")[0]) || d3.select(this).attr("LowerY") === (i.id.split(",")[1])
+              || d3.select(this).attr("UpperY") === (i.id.split(",")[0])
+          }).style("text-shadow", "1px 0 yellow, -1px 0 yellow, 0 1px yellow, 0 -1px yellow");
+      }
     }
   }
 
@@ -355,12 +367,17 @@ mouseOverTotalRect(d: any, i:any) {
         .filter(function() {
           return d3.select(this).attr("name") === (i.name)
         }).style("font-weight",20);
+    } else {
+      d3.selectAll("text")
+        .filter(function() {
+          return d3.select(this).attr("name") === (i.name)
+        }).style("text-shadow","none");
     }
   }
 
     resizeDefault(){
     this.centralitiesSet = false;
-      d3.selectAll("text").style("font-weight", "normal");
+      d3.selectAll("text").style("font-weight", "normal").style("opacity", 1);
     }
 
     resizeWeighted(ids: number[], yearly: boolean){
@@ -420,12 +437,17 @@ mouseOverTotalRect(d: any, i:any) {
             d3.selectAll("text")
               .filter(function() {
                 return d3.select(this).attr("id") === (part + String(elem.id))
-              }).style("font-weight","500");
-          } else {
+              }).style("font-weight","500").style("opacity", 0.8);
+          } else if(elem.centrality/max>=0.20 && elem.centrality/max <=0.33){
             d3.selectAll("text")
               .filter(function() {
                 return d3.select(this).attr("id") === (part + String(elem.id))
-              }).style("font-weight","100");
+              }).style("font-weight","100").style("opacity", 0.8); }
+          else {
+            d3.selectAll("text")
+              .filter(function() {
+                return d3.select(this).attr("id") === (part + String(elem.id))
+              }).style("font-weight","100").style("opacity",0.3);
           }
         }
       )
@@ -440,11 +462,13 @@ mouseOverTotalRect(d: any, i:any) {
       .style("opacity","0")
     if(!this.centralitiesSet){
       d3.selectAll("text").style("font-weight", "normal");
+      d3.selectAll("text").style("opacity",1);
+    } else {
+      d3.selectAll("text").style("text-shadow","none");
     }
     if(yearly){
       d3.selectAll("text").style("font-size", "18");
     }
-     d3.selectAll("text").style("opacity","1");
   }
 
   initNetworksMap(color: string){
@@ -640,7 +664,6 @@ mouseOverTotalRect(d: any, i:any) {
        .style("fill", "var(--" + pipe.transform(color) + ")")
        .style('cursor', 'pointer');
 
-   //before style
      if(part==="lower"){
         half.attr("x", (d:any)=> d.x<=d.y? d.x*scale-scale/move : d.x*scale+scale/move)
           .attr("y", (d:any)=> d.x<=d.y? d.y*scale+scale/move : d.y*scale-scale/move)
