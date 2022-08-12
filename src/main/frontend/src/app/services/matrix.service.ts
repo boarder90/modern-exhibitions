@@ -142,6 +142,11 @@ export class MatrixService {
     return map;
   }
 
+  /**
+   * Returns the size of a single rectangle depending on the row length
+   *
+   * @param length
+   */
   calculateSizeOfRectTotal(length: number): number{
     if(length<=5){
       return 130;
@@ -158,6 +163,11 @@ export class MatrixService {
     }
   }
 
+  /**
+   * Returns the size of a single yearly rectangle depending on the row length
+   *
+   * @param length
+   */
   calculateSizeOfRectYearly(length: number): number{
     if(length<=5){
       return 50;

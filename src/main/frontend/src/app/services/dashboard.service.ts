@@ -11,7 +11,12 @@ export class DashboardService {
 
   constructor() { }
 
-setCountriesArray(countries: any){
+  /**
+   * Returns a map of countries, which contains the country as a key and the number of occurrences as a value
+   *
+    * @param countries
+   */
+setCountriesMap(countries: any){
     this.countriesMap = new Map;
     if(countries!==null) {
       countries.forEach(
@@ -27,7 +32,12 @@ setCountriesArray(countries: any){
     return this.countriesMap;
   }
 
-  setCitiesArray(cities: any){
+  /**
+   * Returns a map of cities, which contains the city as a key and the number of occurrences as a value
+   *
+   * @param cities
+   */
+  setCitiesMap(cities: any){
     this.citiesMap = new Map;
     if(cities!=null){
       cities.forEach(
