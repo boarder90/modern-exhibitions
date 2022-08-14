@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation
+  Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation
 } from '@angular/core';
 import * as d3 from 'd3';
 import {NetworkService} from "../../../services/HttpServices/network.service";
@@ -18,7 +18,7 @@ import {CityPipe} from "../../../util/city-pipe";
   templateUrl: './matrix.component.html',
   styleUrls: ['./matrix.component.scss']
 })
-export class MatrixComponent implements OnInit {
+export class MatrixComponent implements OnInit, OnDestroy {
 
   @ViewChild('matrixTotal', {read: ElementRef})
   total!: ElementRef<HTMLElement>;
@@ -46,6 +46,7 @@ export class MatrixComponent implements OnInit {
   private currentUpper!: number;
   private color: string  = "default"
   private centralitiesSet: boolean = false;
+  private yearlyMap: any;
 
 
   @Input('yearly') isYearly: boolean = false;
@@ -56,7 +57,13 @@ export class MatrixComponent implements OnInit {
   ngOnInit(): void {
   }
 
-   getTotal(networkIds: number[], color:string){
+  ngOnDestroy() {
+    if(this.yearlyMap){
+      this.yearlyMap.unsubscribe();
+    }
+  }
+
+  getTotal(networkIds: number[], color:string){
      d3.select("svg").selectAll("*").remove();
      this.networkService.getNetwork(networkIds).subscribe(
       data => {
@@ -115,7 +122,7 @@ export class MatrixComponent implements OnInit {
   }
 
    drawHalfMatrix(e: number, lower: boolean, color: string){
-    this.networkService.getMap().subscribe(
+     this.yearlyMap = this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         let matrix;
@@ -472,7 +479,7 @@ mouseOverTotalRect(d: any, i:any) {
   }
 
   initNetworksMap(color: string){
-    this.networkService.getMap().subscribe(
+    this.yearlyMap = this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         //console.log(this.map)

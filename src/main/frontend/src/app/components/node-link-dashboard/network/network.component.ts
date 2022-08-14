@@ -17,6 +17,9 @@ export class NetworkComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     d3.selectAll("g").remove();
+      if(this.yearlyMap){
+        this.yearlyMap.unsubscribe();
+     }
     }
 
   @Input('yearly') isYearly: boolean = false;
@@ -47,6 +50,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
   countriesArr : string[] = [];
   citiesArr: string[] = [];
   private granularity: boolean = true;
+  yearlyMap: any;
 
   ngOnInit(): void {
   }
@@ -92,7 +96,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
     console.log(this.currentYear + " " + color)
     d3.select("svg#networkYearly").selectAll("*").remove();
     this.networkService.getNetworkYearlyFilteredByCountry(networkIds, country);
-    this.networkService.getMap().subscribe(
+    this.yearlyMap = this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         console.log(this.map)
@@ -104,7 +108,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
   getYearlyFilteredByCity(networkIds: number[], city: string, color:string, year: number, lower: boolean){
     d3.select("svg#networkYearly").selectAll("*").remove();
     this.networkService.getNetworkYearlyFilteredByCity(networkIds, city);
-    this.networkService.getMap().subscribe(
+    this.yearlyMap = this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         console.log(this.map)
@@ -227,7 +231,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
           d3.selectAll("text").style("opacity", (d:any) => (map.get(this.currentYear)!.has(id+","+d.id)||d.id === id) ? 1 : 0.1);
         }
       }
-    )
+    ).unsubscribe();
   }
 
   getConnectionsOfNodeTotal(id: number) {
@@ -237,15 +241,12 @@ export class NetworkComponent implements OnInit, OnDestroy {
           d3.selectAll("text").style("opacity", (d:any) => (map.has(id+","+d.id)||d.id === id) ? 1 : 0.1);
 
       }
-    )
+    ).unsubscribe();
   }
 
   getYearly(networkIds: number[]) {
-    d3.selectAll("text").style("opacity", 1);
-    d3.selectAll("path").style("opacity",1);
-    d3.selectAll("circle").style("opacity", 1);
     this.networkService.getNetworkYears(networkIds);
-    this.networkService.getMap().subscribe(
+    this.yearlyMap = this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         this.drawYearly(1904, "default")
@@ -253,12 +254,15 @@ export class NetworkComponent implements OnInit, OnDestroy {
     );
   }
 
-  resetLocationFilter(networkIds: number[], year: number, lower: boolean, color: string){
+  resetOpacity(){
     d3.selectAll("text").style("opacity", 1);
     d3.selectAll("path").style("opacity",1);
     d3.selectAll("circle").style("opacity", 1);
+  }
+
+  resetLocationFilter(networkIds: number[], year: number, lower: boolean, color: string){
     this.networkService.getNetworkYears(networkIds);
-    this.networkService.getMap().subscribe(
+    this.yearlyMap = this.networkService.getMap().subscribe(
       data => {
         this.map = data;
         this.drawYearly(year, color)
@@ -268,7 +272,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
 
   drawYearly(year: number, color: string){
     this.currentYear = year;
-    this.networkService.getMap().subscribe(
+    this.yearlyMap = this.networkService.getMap().subscribe(
       data => {
         this.drawNodeLink(data.get(year)!.nodes, data.get(year)!.links, true, color);
       }
@@ -287,9 +291,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
     this.countries.emit(null);
     this.cities.emit(null);
     d3.selectAll("text").style("font-weight", "normal");
-    d3.selectAll("text").style("opacity", 1);
-    d3.selectAll("path").style("opacity",1);
-    d3.selectAll("circle").style("opacity", 1);
+    this.resetOpacity();
     d3.selectAll("circle").attr('stroke', 'white').attr('stroke-width', 1.5);
   }
 
@@ -303,7 +305,6 @@ export class NetworkComponent implements OnInit, OnDestroy {
     this.networkService.getNetwork(ids).subscribe(
       data => {
         this.networkDto = data;
-       // this.redrawPathsYearly(1913);
         this.drawNodeLink(this.networkDto.nodes, this.networkDto.links, false, "default");
       }
     )
@@ -475,9 +476,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
       .text((d: { name: any; }) => d.name).
        attr("font-size", "20px").style("text-shadow", "1px 0 white, -1px 0 white, 0 1px white, 0 -1px white")
 
-    node.on('mouseover', (d: any, i: any) => {
-      this.showArtist(d, i, yearly);
-    });
+    node.on('mouseover', (d: any, i: any) => this.showArtist(d, i, yearly));
     link.on('mouseover', (d: any, i: any) => {
       this.showLink(d, i, yearly);
     });
