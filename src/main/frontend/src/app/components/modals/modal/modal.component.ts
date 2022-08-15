@@ -19,11 +19,12 @@ export class ModalComponent implements OnInit{
   }
 
   remove(artist: ArtistDto){
-    const index = this.artists.indexOf(artist);
+    const index = this.selection.indexOf(artist.id);
+    const index2 = this.artists.indexOf(artist);
     if(index>-1) {
       this.selection.splice(index, 1);
       this.localService.saveNetwork(this.name,this.selection);
-      this.artists.splice(index, 1);
+      this.artists.splice(index2, 1);
     }
   }
 
