@@ -26,7 +26,7 @@ public class NonDomainRepositoryImpl implements NonDomainRepository {
     public FeatureCollectionDto getExhibitionLocationsAsGeoJSON(List<Integer> artistIds) {
         Collection<FeatureDto> result = this.neo4jClient.query("""
                         CALL apoc.do.when($artistIds IS NOT NULL,
-                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and id(a1)<id(a2) and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(e) as numExhibitions',
+                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and id(a1)<id(a2) and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(DISTINCT e) as numExhibitions',
                           'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, count(e) as numExhibitions',
                           {artistIds:$artistIds}
                         )
@@ -42,7 +42,7 @@ public class NonDomainRepositoryImpl implements NonDomainRepository {
     public FeatureCollectionDto getExhibitionLocationsYearlyAsGeoJSON(List<Integer> artistIds) {
         Collection<FeatureDto> result = this.neo4jClient.query("""
                         CALL apoc.do.when($artistIds IS NOT NULL,
-                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and id(a1) < id(a2) and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(e) as numExhibitions',
+                          'match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist),(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where a1.id in $artistIds and a2.id in $artistIds and id(a1) < id(a2) and l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(DISTINCT e) as numExhibitions',
                           'match(e:Exhibition)-[:TAKES_PLACE]->(l:Location) where l.longitude IS NOT NULL return l.longitude as longitude, l.latitude as latitude, e.startYear as year, count(e) as numExhibitions',
                           {artistIds: $artistIds}
                         )
