@@ -444,7 +444,7 @@ export class NetworkComponent implements OnInit, OnDestroy {
       .selectAll('path')
       .data(this.links)
       .join('path')
-      .attr('stroke-width', (d:any) => 2 + 2 * d.numExhibitions)
+      .attr('stroke-width', (d:any) => 3 + 2 * d.numExhibitions)
       .attr("source", (d:any)=>d.source.id)
       .attr("target", (d:any)=>d.target.id)
       .style("stroke", "var(--" + pipe.transform(color) + ")");
