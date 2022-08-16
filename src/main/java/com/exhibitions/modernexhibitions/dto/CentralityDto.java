@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
+ * DTO, which can be used for all kinds of centrality measures
  */
 @Getter
 @Setter
