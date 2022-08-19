@@ -8,39 +8,30 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.List;
 
+/**
+ * Artist entity
+ */
 @ToString
 @Node("Artist")
+@Getter
 public class Artist {
 
     @Id
-    @Getter
     private Integer id;
-
-    @Getter
     private String name;
-
-    @Getter
     private String nationality;
-
-    @Getter
     private String sex;
-
-    @Getter
     private String occupation;
 
-    @Getter
     @Relationship(type="EXHIBITS_WITH_YEARLY", direction = Relationship.Direction.OUTGOING)
     private List<ExhibitsWithYearly> coArtistsOutgoing;
 
-    @Getter
     @Relationship(type="EXHIBITS_WITH_YEARLY", direction = Relationship.Direction.INCOMING)
     private List<ExhibitsWithYearly> coArtistsIncoming;
 
-    @Getter
     @Relationship(type="EXHIBITS_WITH_TOTAL", direction = Relationship.Direction.OUTGOING)
     private List<ExhibitsWithTotal> coArtistsTotalOutgoing;
 
-    @Getter
     @Relationship(type="EXHIBITS_WITH_TOTAL", direction = Relationship.Direction.INCOMING)
     private List<ExhibitsWithTotal> coArtistsTotalIncoming;
 }

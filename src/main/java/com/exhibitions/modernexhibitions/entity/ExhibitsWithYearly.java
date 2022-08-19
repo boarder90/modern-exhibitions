@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
 
+/**
+ * ExhibitsWith relationship properties class
+ */
 @RelationshipProperties
 @Getter
 @Setter

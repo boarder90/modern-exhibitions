@@ -8,36 +8,24 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.List;
 
+/**
+ * Exhibition entity
+ */
 @ToString
 @Node("Exhibition")
+@Getter
 public class Exhibition {
 
     @Id
-    @Getter
     private Integer id;
-
-    @Getter
     private String title;
-
-    @Getter
     private String startDate;
-
-    @Getter
     private String endDate;
-
-    @Getter
     private int startYear;
-
-    @Getter
     private int endYear;
-
-    @Getter
     private int numArtists;
-
-    @Getter
     private int numCatalogueEntries;
 
-    @Getter
     @Relationship(type="TAKES_PLACE", direction = Relationship.Direction.OUTGOING)
     List<Location> locations;
 }

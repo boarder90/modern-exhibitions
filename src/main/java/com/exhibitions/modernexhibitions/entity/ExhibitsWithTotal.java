@@ -7,6 +7,9 @@ import org.springframework.data.neo4j.core.schema.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * ExhibitsWithTotal relationship property class
+ */
 @RelationshipProperties
 @Getter
 @Setter
