@@ -22,10 +22,12 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         this.exhibitionRepository = e;
     }
 
+    @Override
     public List<Exhibition> findAll (){
         return this.exhibitionRepository.findAll();
     }
 
+    @Override
     public List<Exhibition> findExhibitionsFiltered (List<Double> coordinates, List<Integer> artistIds, Integer year) throws InvalidCoordinatesException, NetworkTooLargeException {
         if(artistIds!= null && artistIds.size()>30){
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");

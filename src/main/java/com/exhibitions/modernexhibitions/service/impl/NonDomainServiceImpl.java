@@ -31,19 +31,8 @@ public class NonDomainServiceImpl implements NonDomainService {
 
     @Override
     public FeatureCollectionDto getExhibitionLocationsYearlyAsGeoJSON(List<Integer> artistIds) {
-        FeatureCollectionDto featureCollectionDto = nonDomainRepository.getExhibitionLocationsYearlyAsGeoJSON(artistIds);
-        List<FeatureDto> exhibitionLocationsByEndYear = nonDomainRepository.getExhibitionLocationsByEndYear(artistIds);
 
-        for (FeatureDto f : featureCollectionDto.getFeatures()) {
-            for (FeatureDto e : exhibitionLocationsByEndYear) {
-                if (Objects.equals(f.getGeometry().getCoordinates().get(0), e.getGeometry().getCoordinates().get(0))
-                        && Objects.equals(f.getGeometry().getCoordinates().get(1), e.getGeometry().getCoordinates().get(1))
-                        && Objects.equals(f.getProperties().getYear(), e.getProperties().getYear())) {
-                    f.getProperties().setNumExhibitions(f.getProperties().getNumExhibitions() + e.getProperties().getNumExhibitions());
-                }
-            }
-        }
-        return featureCollectionDto;
+        return nonDomainRepository.getExhibitionLocationsYearlyAsGeoJSON(artistIds);
     }
 
     @Override
