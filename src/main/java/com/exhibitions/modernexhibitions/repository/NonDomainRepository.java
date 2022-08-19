@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Non-Domain repository layer
+ */
 @Repository
 public interface NonDomainRepository {
 

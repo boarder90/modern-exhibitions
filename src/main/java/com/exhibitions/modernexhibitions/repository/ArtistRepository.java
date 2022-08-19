@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Artist repository layer
+ */
 @Repository
 public interface ArtistRepository extends Neo4jRepository<Artist,Integer> {
 

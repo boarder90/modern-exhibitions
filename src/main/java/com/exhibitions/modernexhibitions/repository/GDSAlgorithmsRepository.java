@@ -3,6 +3,9 @@ package com.exhibitions.modernexhibitions.repository;
 import com.exhibitions.modernexhibitions.dto.CentralityDto;
 import java.util.List;
 
+/**
+ * GDS algorithms repository layer
+ */
 public interface GDSAlgorithmsRepository {
 
     /**
