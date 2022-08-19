@@ -13,12 +13,21 @@ public interface ExhibitionRepository extends Neo4jRepository<Exhibition, Intege
 
     Optional<Exhibition> findById(Integer aInteger);
 
+    /**
+     *
+     * @return Returns all Exhibitions
+     */
     @Query("match (e:Exhibition)-[l:TAKES_PLACE]->(s:Location) RETURN e, collect(l), collect(s)")
     List<Exhibition> findAll();
 
-    @Query("match(a1:Artist)-[r:EXHIBITS_AT]->(e:Exhibition) WHERE a1.id=$id return e")
-    List<Exhibition> findExhibitionsOfArtist(Integer id);
-
+    /**
+     *
+     * @param latitude latitude provided as Double (optional)
+     * @param longitude longitude provided as Double (optional)
+     * @param artistIds artistIds provided as a list of Integers (optional)
+     * @param year exhibition year (optional)
+     * @return Returns a list of exhibitions
+     */
     @Query("""
             CALL apoc.do.case([$artistIds IS NOT NULL AND $latitude IS NULL,\s
                          "match (a1:Artist)-[:EXHIBITS_AT]->(e:Exhibition)<-[:EXHIBITS_AT]-(a2:Artist) WHERE ($year IS NULL OR (e.startYear = $year OR e.endYear= $year)) AND a1.id IN $artists and a2.id IN $artists RETURN e",
