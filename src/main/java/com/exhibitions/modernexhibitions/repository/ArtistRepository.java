@@ -170,7 +170,7 @@ public interface ArtistRepository extends Neo4jRepository<Artist,Integer> {
     /**
      *
      * @param ids IDs of artists
-     * @param country country name
+     * @param country country code
      * @param year optional parameter year
      * @return the network as a list of ArtistProjectionYearlyNetworks
      */
