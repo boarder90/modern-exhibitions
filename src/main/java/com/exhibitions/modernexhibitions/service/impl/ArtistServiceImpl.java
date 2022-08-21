@@ -9,6 +9,8 @@ import com.exhibitions.modernexhibitions.repository.projection.ArtistProjection;
 import com.exhibitions.modernexhibitions.repository.projection.ArtistProjectionTotalNetwork;
 import com.exhibitions.modernexhibitions.repository.projection.ArtistProjectionYearlyNetwork;
 import com.exhibitions.modernexhibitions.service.ArtistService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
+    private final Logger logger = LoggerFactory.getLogger(ArtistServiceImpl.class);
 
     @Autowired
     public ArtistServiceImpl(ArtistRepository a){
@@ -35,6 +38,7 @@ public class ArtistServiceImpl implements ArtistService {
         if(artistOptional.isPresent()){
             return (artistOptional.get());
         } else {
+            logger.error("Artist with id " + id + " not found!");
             throw new NotFoundException("Artist not found");
         }
     }
@@ -64,7 +68,6 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistProjectionYearlyNetwork> getYearlyEgoNetworkOne(Integer id, Integer numExhibitions, Integer year) throws NotFoundException {
         this.getArtistById(id);
-        System.out.println(artistRepository.getEgoNetworkOne(id,numExhibitions,year));
         return artistRepository.getEgoNetworkOne(id,numExhibitions,year);
     }
 
@@ -77,6 +80,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIds(List<Integer>ids, Integer numExhibitions, Integer year) throws NetworkTooLargeException{
         if(ids!= null && ids.size()>30){
+            logger.error("Network size exceeds 30! Current size: " + ids.size() +".");
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         return artistRepository.getNetworkByIds(ids,numExhibitions,year);
@@ -97,6 +101,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistProjectionTotalNetwork> getTotalNetworkByIds(List<Integer> ids, Integer numExhibitions) throws NetworkTooLargeException {
         if(ids!= null && ids.size()>30){
+            logger.error("Network size exceeds 30! Current size: " + ids.size() +".");
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         return artistRepository.getTotalNetworkByIds(ids,numExhibitions);
@@ -105,6 +110,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCountry(List<Integer> ids, String country) throws NetworkTooLargeException{
         if(ids!= null && ids.size()>30){
+            logger.error("Network size exceeds 30! Current size: " + ids.size() +".");
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCountry(ids, country);
@@ -122,6 +128,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistProjectionTotalNetwork> getTotalNetworkByIdsFilteredByCity(List<Integer> ids, String city) throws NetworkTooLargeException{
         if(ids!= null && ids.size()>30){
+            logger.error("Network size exceeds 30! Current size: " + ids.size() +".");
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionTotalNetwork> artists  = artistRepository.getTotalNetworkByIdsFilteredByCity(ids, city);
@@ -140,6 +147,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIdsFilteredByCountry(List<Integer> ids, String country, Integer year) throws NetworkTooLargeException {
         if(ids!= null && ids.size()>30){
+            logger.error("Network size exceeds 30! Current size: " + ids.size() +".");
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionYearlyNetwork> artists  = artistRepository.getYearlyNetworkByIdsFilteredByCountry(ids, country, year);
@@ -159,6 +167,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistProjectionYearlyNetwork> getYearlyNetworkByIdsFilteredByCity(List<Integer> ids, String city, Integer year) throws NetworkTooLargeException{
         if(ids!= null && ids.size()>30){
+            logger.error("Network size exceeds 30! Current size: " + ids.size() +".");
             throw new NetworkTooLargeException("Currently only 30 distinctive ids are supported.");
         }
         List<ArtistProjectionYearlyNetwork> artists  = artistRepository.getYearlyNetworkByIdsFilteredByCity(ids, city, year);
